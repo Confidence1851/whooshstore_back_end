@@ -27,10 +27,66 @@ class RegisterController extends ApiController{
     }
 
     /**
-     * Register api
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * @OA\Post(
+    ** path="/v1/register",
+    *   tags={"Authentication"},
+    *   summary="Register",
+    *   operationId="register",
+    *
+    *   @OA\Parameter(
+    *      name="name",
+    *      in="query",
+    *      required=true,
+    *      @OA\Schema(
+    *           type="string"
+    *      )
+    *   ),
+    *   @OA\Parameter(
+    *      name="email",
+    *      in="query",
+    *      required=true,
+    *      @OA\Schema(
+    *          type="string"
+    *      )
+    *   ),
+    *   @OA\Parameter(
+    *      name="password",
+    *      in="query",
+    *      required=true,
+    *      @OA\Schema(
+    *          type="string"
+    *      )
+    *   ),
+    *   @OA\Response(
+    *      response=200,
+    *       description="Success",
+    *      @OA\MediaType(
+    *           mediaType="application/json",
+    *      )
+    *   ),
+    *   @OA\Response(
+    *      response=401,
+    *       description="Unauthenticated"
+    *   ),
+    *   @OA\Response(
+    *      response=400,
+    *      description="Bad Request"
+    *   ),
+    *   @OA\Response(
+    *      response=404,
+    *      description="Not found"
+    *   ),
+    *      @OA\Response(
+    *          response=403,
+    *          description="Forbidden"
+    *      )
+    *)
+    **/
+   /**
+    * login api
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function register(Request $request)
     {
         DB::beginTransaction();
@@ -48,8 +104,6 @@ class RegisterController extends ApiController{
             $user = $this->userRepo->create([
                 'name' => ucwords($request['name']),
                 'email' => $request['email'],
-                'account_no' => $this->userRepo->generate_account_no(),
-                'role' => 0,
                 'password' => Hash::make($request['password']),
             ]);
 

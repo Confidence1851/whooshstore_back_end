@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Helpers\ApiConstants;
 use App\Http\Controllers\Api\V1\ApiController;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Traits\Profile;
 use App\Transformers\UserTransformer;
 use Illuminate\Auth\Events\Registered;
@@ -18,11 +19,17 @@ use Illuminate\Validation\ValidationException;
 class LoginController extends ApiController{
     use Profile;
      
+    private $userRepo;
+
+    public function __construct(UserRepositoryInterface $userRepo)
+    {
+        $this->userRepo = $userRepo;
+    }
 
     /**
      * @OA\Post(
      ** path="/v1/login",
-     *   tags={"Login"},
+     *   tags={"Authentication"},
      *   summary="Login",
      *   operationId="login",
      *
@@ -88,7 +95,7 @@ class LoginController extends ApiController{
             $credentials = ['email' => $request->email, 'password' => $request->password];
 
             if (Auth::attempt($credentials)) {
-                $user = $this->User->user();
+                $user = $this->userRepo->user();
                 $userTokens = $user->tokens;
 
                 // Delete exiting tokens

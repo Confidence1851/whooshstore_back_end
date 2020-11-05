@@ -14,7 +14,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost/api",
+            "url": "http://127.0.0.1:7777/api",
             "description": "Demo API Server"
         }
     ],
@@ -22,7 +22,7 @@
         "/v1/login": {
             "post": {
                 "tags": [
-                    "Login"
+                    "Authentication"
                 ],
                 "summary": "Login",
                 "operationId": "login",
@@ -37,6 +37,100 @@
                     },
                     {
                         "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/v1/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register",
+                "operationId": "register",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/v1/auth/validate-token": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Verify oatuth token",
+                "operationId": "validate_token",
+                "parameters": [
+                    {
+                        "name": "token",
                         "in": "query",
                         "required": true,
                         "schema": {
