@@ -13,7 +13,7 @@ class WebController extends Controller
     */
     public function index()
     {
-        # code...
+        return view('welcome');
     }
 
     /**
