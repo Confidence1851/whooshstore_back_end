@@ -21,7 +21,51 @@ use Illuminate\Validation\ValidationException;
 class VerificationController extends ApiController{
     use Notifications , Profile;
 
-
+ /**
+     * @OA\Post(
+     ** path="/v1/auth/validate-token",
+     *   tags={"Authentication"},
+     *   summary="Verify oatuth token",
+     *   operationId="validate_token",
+     *
+     *   @OA\Parameter(
+     *      name="token",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+    *   @OA\Response(
+    *      response=200,
+    *       description="Success",
+    *      @OA\MediaType(
+    *           mediaType="application/json",
+    *      )
+    *   ),
+    *   @OA\Response(
+    *      response=401,
+    *       description="Unauthenticated"
+    *   ),
+    *   @OA\Response(
+    *      response=400,
+    *      description="Bad Request"
+    *   ),
+    *   @OA\Response(
+    *      response=404,
+    *      description="Not found"
+    *   ),
+    *      @OA\Response(
+    *          response=403,
+    *          description="Forbidden"
+    *      )
+     *)
+     **/
+    /**
+     * login api
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function validate_token(){
         $user = auth('api')->user();
         if(empty($user)){

@@ -20,7 +20,9 @@ function problemResponse(string $message = null, int $status_code = null, Reques
 		'code' => $code,
 		'success' => false,
 		'error_debug' => empty($trace) ?  null  : $trace->getMessage(),
+		'error_trace' => empty($trace) ?  null  : $trace->getTrace(),
 	];
+	logger($trace->getMessage() , $trace->getTrace());
 
 	return response()->json($body)->setStatusCode($code);
 }
