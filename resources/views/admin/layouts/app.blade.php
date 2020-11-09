@@ -7,7 +7,7 @@
     <meta name="format-detection" content="telephone=no">
 
     <!-- Title -->
-    <title>@yield('title') :: {{env('APP_NAME')}} </title>
+    <title>@yield('title') :: {{env('APP_NAME')}} : Admin</title>
 
     <!-- Meta -->
     <meta name="keywords" content="">
@@ -24,20 +24,19 @@
     <link rel="shortcut icon" href="{{ $web_source }}/img/icons/favicon.ico">
     
     <!-- CSS File -->
-    @include('web.includes.styles')
+    @include('admin.includes.styles')
 
      <!-- Jquery Toast css -->
      <link href="{{asset('toast')}}/jquery.toast.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <!-- header -->
-    @include('web.includes.header')
-    @include('web.includes.header_mobile')
-    <!-- main content -->
-    @yield('content')
-    <!-- footer -->
-    @include('web.includes.footer')
+    <main class="ps-main">
+        <!-- header -->
+        @include('admin.includes.side_bar')
+        <!-- main content -->
+        @yield('content')
+    </main>
     <!-- scripts -->
-    @include('web.includes.scripts')
+    @include('admin.includes.scripts')
 </body>
 </html>

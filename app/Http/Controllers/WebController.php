@@ -13,7 +13,17 @@ class WebController extends Controller
     */
     public function index()
     {
-        return view('welcome');
+        return view('admin.products.index');
+    }
+
+    public function adminIndex()
+    {
+        return view('admin.dashboard');
+    }
+
+    public function productIndex()
+    {
+        return view('admin.products.index');
     }
 
     /**
