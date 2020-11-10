@@ -1,3 +1,15 @@
+@extends('layouts.app')
+@section('title')
+    Welcome
+@endsection
+@section('content')
+    <main class="main">
+        
+    </main>
+@endsection
+
+{{-- 
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -130,3 +142,5 @@
         </div>
     </body>
 </html>
+
+ --}}
