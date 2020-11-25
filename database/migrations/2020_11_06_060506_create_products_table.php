@@ -15,8 +15,8 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id')->index();
-            $table->integer('user_id')->unsignedBigInteger()->index();
+            // $table->unsignedBigInteger('category_id')->index();
+            // $table->integer('user_id')->unsignedBigInteger()->index();
             $table->string('name');
             $table->string('sku')->unique();
             $table->string('slug')->unique();
@@ -33,7 +33,7 @@ class CreateProductsTable extends Migration
             $table->enum('size', ['XXS','XS','S','M','L','XL','XXL','XXXL'])->nullable();
             $table->enum('type',['New','Featured']);
             $table->enum('status', ['Inactive', 'Active']);
-            $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
+            // $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

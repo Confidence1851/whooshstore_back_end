@@ -15,7 +15,7 @@ use App\Http\Controllers\WebController;
 */
 
 Route::get('/', function () {
-    return view('admin.products.index');
+    return view('auth.login');
 });
 
 Route::namespace('App\Http\Controllers')->group(function (){
@@ -34,3 +34,6 @@ Route::namespace('App\Http\Controllers')->group(function (){
     });
 
 });
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
