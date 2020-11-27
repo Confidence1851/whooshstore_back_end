@@ -23,15 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        if($user->role == "Admin"){
-            return redirect('admin/dashboard');
-        }
-        return view('user/dashboard');
-    }
-
-    public function logout(){
-        Session::flush();
-        return redirect()->route('login');
+        return view('admin.dashboard');
     }
 }
