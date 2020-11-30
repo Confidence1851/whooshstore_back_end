@@ -33,9 +33,6 @@
             <li class="nav-item">
               <a href="{{ url('/admin/productcategories/create') }}" class="nav-link">Create</a>
             </li>
-            <li class="nav-item">
-              <a href="{{ url('/edit') }}" class="nav-link">Edit</a>
-            </li>
           </ul>
         </div>
       </li>
