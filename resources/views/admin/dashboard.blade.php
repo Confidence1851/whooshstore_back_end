@@ -428,16 +428,16 @@
 @endsection
 
 @push('plugin-scripts')
-<script src="{{asset('assets/plugins/chartjs/Chart.min.js')}}"></script>
-<script src="{{asset('assets/plugins/jquery.flot/jquery.flot.js')}}"></script>
-<script src="{{asset('assets/plugins/jquery.flot/jquery.flot.resize.js')}}"></script>
-<script src="{{asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
-<script src="{{asset('assets/plugins/apexcharts/apexcharts.min.js')}}"></script>
-<script src="{{asset('assets/plugins/progressbar-js/progressbar.min.js')}}"></script>
+<script src="{{asset('assets/plugins/chartjs/Chart.min.js')}}" defer></script>
+<script src="{{asset('assets/plugins/jquery.flot/jquery.flot.js')}}" defer></script>
+<script src="{{asset('assets/plugins/jquery.flot/jquery.flot.resize.js')}}" defer></script>
+<script src="{{asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}" defer></script>
+<script src="{{asset('assets/plugins/apexcharts/apexcharts.min.js')}}" defer></script>
+<script src="{{asset('assets/plugins/progressbar-js/progressbar.min.js')}}" defer></script>
 
 @endpush
 
 @push('custom-scripts')
-<script src="{{asset('assets/js/dashboard.js')}}"></script>
-<script src="{{asset('assets/js/datepicker.js')}}"></script>
+<script src="{{asset('assets/js/dashboard.js')}}" defer></script>
+<script src="{{asset('assets/js/datepicker.js')}}" defer></script>
 @endpush
