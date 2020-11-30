@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductCategory\StoreProductCategory;
 use App\Models\ProductCategory;
+use Exception;
 use Illuminate\Http\Request;
 
 class ProductCategoryController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -40,26 +41,25 @@ class ProductCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductCategory  $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'slug' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
-        $productCategory = new ProductCategory;
+        try {
+            $productCategory = new ProductCategory;
 
-        $productCategoryImage = $request->image;
-        $productCategoryImageNewName = time() . $productCategoryImage->getClientOriginalName();
-        $productCategoryImage->move('uploads/product-category', $productCategoryImageNewName);
+            $productCategoryImage = $request->image;
+            $productCategoryImageNewName = time() . $productCategoryImage->getClientOriginalName();
+            $productCategoryImage->move('uploads/product-category', $productCategoryImageNewName);
 
-        $productCategory->name = $request->name;
-        $productCategory->slug = $request->slug;
-        $productCategory->image = 'uploads/product-category/' . $productCategoryImageNewName;
+            $productCategory->name = $request->name;
+            $productCategory->slug = $request->slug;
+            $productCategory->image = 'uploads/product-category/' . $productCategoryImageNewName;
 
-        $productCategory->save();
-        toastr()->success('Data has been saved successfully!');
-        return redirect()->route('index.productcategories');
+            $productCategory->save();
+            toastr()->success('Data has been saved successfully!');
+            return redirect()->route('index.productcategories');
+        } catch (Exception $e) {
+            return back()->with("error", $e->getMessage());
+        }
     }
 
     /**
@@ -93,35 +93,33 @@ class ProductCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $productCategoryId)
+    public function update(StoreProductCategory $request, $productCategoryId)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'slug' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
+        try {
+            $productCategory = ProductCategory::findOrFail($productCategoryId);
 
-        $productCategory = ProductCategory::findOrFail($productCategoryId);
+            if ($request->hasFile('image')) {
+                $productCategoryImage = $request->image;
 
-        if ($request->hasFile('image')) {
-            $productCategoryImage = $request->image;
+                $productCategoryImageNewName = time() . $productCategoryImage->getClientOriginalName();
 
-            $productCategoryImageNewName = time() . $productCategoryImage->getClientOriginalName();
+                $productCategoryImage->move('uploads/product-category', $productCategoryImageNewName);
 
-            $productCategoryImage->move('uploads/product-category', $productCategoryImageNewName);
+                $productCategoryImage->image = 'uploads/product-category/' . $productCategoryImageNewName;
 
-            $productCategoryImage->image = 'uploads/product-category/' . $productCategoryImageNewName;
+                $productCategory->save();
+            }
 
-            $productCategory->save();
+            $productCategory->name = $request->name;
+            $productCategory->slug = $request->slug;
+            $productCategory->image = 'uploads/product-category/' . $productCategoryImageNewName;
+
+            $productCategory->update();
+            toastr()->success('Data has been updated successfully!');
+            return redirect()->route('index.productcategories');
+        } catch (Exception $e) {
+            return back()->with("error", $e->getMessage());
         }
-
-        $productCategory->name = $request->name;
-        $productCategory->slug = $request->slug;
-        $productCategory->image = 'uploads/product-category/' . $productCategoryImageNewName;
-
-        $productCategory->update();
-        toastr()->success('Data has been updated successfully!');
-        return redirect()->route('index.productcategories');
     }
 
     /**
@@ -132,16 +130,19 @@ class ProductCategoryController extends Controller
      */
     public function destroy($productCategoryId)
     {
-        $productCategory = ProductCategory::findOrFail($productCategoryId);
+        try {
+            $productCategory = ProductCategory::findOrFail($productCategoryId);
 
-        if(file_exists($productCategory->image))
-        {
-            unlink($productCategory->image);
+            if (file_exists($productCategory->image)) {
+                unlink($productCategory->image);
+            }
+
+            $productCategory->delete();
+
+            toastr()->success('Data has been Deleted successfully!');
+            return redirect()->back();
+        } catch (Exception $e) {
+            return back()->with("error", $e->getMessage());
         }
-
-        $productCategory->delete();
-
-        toastr()->success('Data has been Deleted successfully!');
-        return redirect()->back();
     }
 }
