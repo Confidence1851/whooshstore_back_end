@@ -28,10 +28,10 @@
          <div class="collapse" id="productcategory">
           <ul class="nav sub-menu">
             <li class="nav-item">
-              <a href="{{ url('/index') }}" class="nav-link">Index</a>
+              <a href="{{ url('/admin/productcategories') }}" class="nav-link">Index</a>
             </li>
             <li class="nav-item">
-              <a href="{{ url('/create') }}" class="nav-link">Create</a>
+              <a href="{{ url('/admin/productcategories/create') }}" class="nav-link">Create</a>
             </li>
             <li class="nav-item">
               <a href="{{ url('/edit') }}" class="nav-link">Edit</a>
