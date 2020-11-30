@@ -24,6 +24,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::middleware(['is_admin'])->group(function () {
             Route::get('dashboard', 'HomeController@adminHome')->name('admin.dashboard');
+
+            // Admin products
+            Route::namespace('Admin')->group(function () {
+                Route::resource('productcategories', 'ProductCategoryController')->names([
+                    'index' => 'index.productcategories'
+                ]);
+            });
         });
     });
     Route::get('/home', 'HomeController@index')->name('home');
