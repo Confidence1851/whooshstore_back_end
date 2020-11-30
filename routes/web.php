@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,23 +20,25 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::namespace('App\Http\Controllers')->group(function (){
-    Route::prefix('admin')->group(function (){
-        
-        Route::get('dashboard','AdminController@index')->name('admin');
-        Route::get('products', 'ProductController@index')->name('adminProducts');
-
-        Route::prefix('products')->group(function (){
-
-            Route::get('add', 'ProductController@add')->name('addProducts');
-            Route::get('edit', 'ProductController@edit')->name('editProducts');
-            
+Route::namespace('App\Http\Controllers')->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::middleware(['is_admin'])->group(function () {
+            Route::get('dashboard', 'HomeController@adminHome')->name('admin.dashboard');
         });
-
     });
-
+    Route::get('/home', 'HomeController@index')->name('home');
 });
+Auth::routes();
 
-Auth::routes(['register' => false]);
 
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+// Route::get('products', 'ProductController@index')->name('adminProducts');
+
+// Route::prefix('products')->group(function (){
+
+//     Route::get('add', 'ProductController@add')->name('addProducts');
+//     Route::get('edit', 'ProductController@edit')->name('editProducts');
+    
+// });
+
+// ['register' => false]
+// Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');

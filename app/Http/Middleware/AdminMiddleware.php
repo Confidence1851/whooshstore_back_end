@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,15 +17,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check()) {
-            $user = Auth::User();
-            if ($user->role != 'Admin') {
-                Session::flash('error_msg','Access Denied!.....Admins Only!');
-                return redirect('/');
-            }
-        } else{
-            return redirect('/login');
+        if (auth()->user()->is_admin == 1) {
+            return $next($request);
         }
-        return $next($request);
+
+        return redirect('home')->with('error', "You don't have admin access.");
     }
 }
