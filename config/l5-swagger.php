@@ -5,7 +5,15 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'L5 Swagger UI',
+                \App\Http\Middleware\EncryptCookies::class,
+                \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+                \Illuminate\Session\Middleware\StartSession::class,
+                \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+                \App\Http\Middleware\VerifyCsrfToken::class,
+                \Illuminate\Routing\Middleware\SubstituteBindings::class,
+                \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+                'auth',
+                'title' => 'Kiosk Extra Api Documentation',
             ],
 
             'routes' => [
@@ -124,11 +132,12 @@ return [
                     'description' => 'Laravel passport oauth2 security.',
                     'in' => 'header',
                     'scheme' => 'https',
+                    'name' => "Authorization",
                     'flows' => [
                         "password" => [
-                            "authorizationUrl" => config('app.url') . '/oauth/authorize',
-                            "tokenUrl" => config('app.url') . '/oauth/token',
-                            "refreshUrl" => config('app.url') . '/token/refresh',
+                            "authorizationUrl" => env("L5_SWAGGER_CONST_HOST") . '/oauth/authorize',
+                            "tokenUrl" => env("L5_SWAGGER_CONST_HOST") . '/oauth/token',
+                            "refreshUrl" => env("L5_SWAGGER_CONST_HOST") . '/token/refresh',
                             "scopes" => []
                         ],
                     ],

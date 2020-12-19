@@ -22,9 +22,10 @@ class VerificationController extends ApiController{
     use Notifications , Profile;
 
  /**
-     * @OA\Post(
+     * @OA\Get(
      ** path="/v1/auth/validate-token",
      *   tags={"Authentication"},
+     * * security={{ "passport": {}}},
      *   summary="Verify oatuth token",
      *   operationId="validate_token",
      *
