@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WebController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('admin.products.index');
+});
+
+Route::namespace('App\Http\Controllers')->group(function (){
+    Route::prefix('admin')->group(function (){
+        
+        Route::get('dashboard','AdminController@index')->name('admin');
+        Route::get('products', 'ProductController@index')->name('adminProducts');
+
+        Route::prefix('products')->group(function (){
+
+            Route::get('add', 'ProductController@add')->name('addProducts');
+            Route::get('edit', 'ProductController@edit')->name('editProducts');
+            
+        });
+
+    });
+
 });
