@@ -12,12 +12,12 @@ class CartTransformer
         $cartItemTransformer = new CartItemTransformer;
         return [
             'id' => $cart->id,
-            'price' => $cart->price,
-            'discount' => $cart->discount,
-            'total' => $cart->total,
-            'quantity' => $cart->quantity,
+            'price' => format_int($cart->price , 2),
+            'discount' => format_int($cart->discount , 2),
+            'total' => format_int($cart->total , 2),
+            'items' => (int) $cart->items,
             'reference' => $cart->reference,
-            'items' => $cartItemTransformer->collect($cart->cartItems ?? [])
+            'cartItems' => $cartItemTransformer->collect($cart->cartItems ?? [])
         ];
     }
 

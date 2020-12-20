@@ -252,7 +252,7 @@ class CartController extends ApiController
         try {
             $cart = getUserCart("api");
             $cartTransformer = new CartTransformer;
-            return validResponse("Cart retieved", "", $cartTransformer->transform($cart));
+            return validResponse("Cart retieved", $cartTransformer->transform($cart));
         } catch (\Exception $e) {
             DB::rollback();
             $message = 'Something went wrong while processing your request.';

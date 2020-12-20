@@ -273,3 +273,8 @@ function getFileType(String $type)
             return false;
         }
     }
+
+
+    function format_int($value , $decimal = 0){
+        return (int) number_format($value , $decimal , ''  );
+    }
