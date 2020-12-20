@@ -32,8 +32,12 @@ class CreateProductsTable extends Migration
             $table->enum('size', ['XXS','XS','S','M','L','XL','XXL','XXXL'])->nullable();
             $table->enum('type',['New','Featured']);
             $table->enum('status', ['Inactive', 'Active']);
+<<<<<<< HEAD:database/migrations/2020_08_06_060506_create_products_table.php
             $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+=======
+            // $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
+>>>>>>> 112b3096687d33c0be204175616112ae4d63f30e:database/migrations/2020_11_06_060506_create_products_table.php
             $table->timestamps();
         });
     }

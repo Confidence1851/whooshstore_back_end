@@ -20,7 +20,7 @@ Route::namespace('App\Http\Controllers\Api\v1')->prefix("v1")->group(function ()
         Route::post('register','RegisterController@register');
         Route::post('login','LoginController@login');
 
-        Route::as('auth.')->prefix("auth")->middleware('auth:api')->group(function (){
+        Route::as('auth.')->prefix("auth")->middleware('auth:sanctum')->group(function (){
 
             Route::get('validate-token', 'VerificationController@validate_token');
             Route::get('email/verify/{id}', 'VerificationController@verify_email')->name('api.verify_email');
