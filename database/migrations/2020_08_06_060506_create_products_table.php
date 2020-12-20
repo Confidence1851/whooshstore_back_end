@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->double('price', 10, 2);
             $table->string('video')->nullable();
             $table->text('description');
-            $table->text('details')->nullable()->default('text');
+            $table->text('details')->nullable();
             $table->string('tags');
             $table->integer('percent_off')->nullable();
             $table->integer('weight')->nullable();
