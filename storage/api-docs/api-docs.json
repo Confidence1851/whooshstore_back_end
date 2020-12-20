@@ -173,6 +173,7 @@
                 "description": "Laravel passport oauth2 security.",
                 "in": "header",
                 "scheme": "https",
+                "name": "Authorization",
                 "flows": {
                     "password": {
                         "authorizationUrl": "http://127.0.0.1:7777/api/oauth/authorize",

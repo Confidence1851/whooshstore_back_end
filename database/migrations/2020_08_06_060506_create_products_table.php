@@ -16,13 +16,12 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id')->index();
-            $table->integer('user_id')->unsignedBigInteger()->index();
+            $table->unsignedBigInteger("user_id")->index()->nullable();
             $table->string('name');
             $table->string('sku')->unique();
             $table->string('slug')->unique();
             $table->integer('quantity');
             $table->double('price', 10, 2);
-            $table->string('image');    
             $table->string('video')->nullable();
             $table->text('description');
             $table->text('details')->nullable()->default('text');
@@ -34,6 +33,7 @@ class CreateProductsTable extends Migration
             $table->enum('type',['New','Featured']);
             $table->enum('status', ['Inactive', 'Active']);
             $table->foreign('category_id')->references('id')->on('product_categories')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->timestamps();
         });
     }

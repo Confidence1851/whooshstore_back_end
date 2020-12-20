@@ -1,5 +1,7 @@
 <?php
 
+define(PHP_VERSION , "7.4.8");
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebController;
 
