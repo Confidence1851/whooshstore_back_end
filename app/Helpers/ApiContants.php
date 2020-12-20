@@ -9,7 +9,8 @@ class ApiConstants
     const SERVER_ERR_CODE = 500;
     const BAD_REQ_ERR_CODE = 400;
     const AUTH_ERR_CODE = 401;
-    const VALIDATION_ERR_CODE = 406;
+    const NOT_FOUND_ERR_CODE = 404;
+    const VALIDATION_ERR_CODE = 422;
     const GOOD_REQ_CODE = 200;
     const DEFAULT_USER_TYPE = "user"; // represents "Student"
     const ADMIN_USER_TYPE = "admin";// represents "Admin"
@@ -31,6 +32,11 @@ class ApiConstants
     const FB_PROVIDER = 'facebook';
 
     const PAGINATION_SIZE_WEB = 50;
+
+
+    const ACTIVE_STATUS = "Active";
+    const INACTIVE_STATUS = "Inactive";
+
 
 
 

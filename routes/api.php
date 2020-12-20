@@ -14,21 +14,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::namespace('App\Http\Controllers\Api\v1')->prefix("v1")->group(function (){
+Route::namespace('App\Http\Controllers\Api\v1')->prefix("v1")->group(function () {
 
-    Route::namespace('Auth')->group(function (){
-        Route::post('register','RegisterController@register');
-        Route::post('login','LoginController@login');
+    Route::namespace('Auth')->group(function () {
+        Route::post('register', 'RegisterController@register');
+        Route::post('login', 'LoginController@login');
 
-        Route::as('auth.')->prefix("auth")->middleware('auth:sanctum')->group(function (){
-
+        Route::as('auth.')->prefix("auth")->middleware('auth:api')->group(function () {
             Route::get('validate-token', 'VerificationController@validate_token');
             Route::get('email/verify/{id}', 'VerificationController@verify_email')->name('api.verify_email');
             Route::get('email/resend', 'VerificationController@resend_email')->name('api.resend_email');
             Route::get('verification-pin', 'VerificationController@sendVerificationEmail');
             Route::post('verify-email-pin', 'VerificationController@confirmVerificationPin');
-
         });
     });
 
+    Route::as('products.')->prefix("products")->group(function () {
+        Route::get('list', 'ProductController@index');
+        Route::get('detail', 'ProductController@show');
+    });
+
+    Route::as('auth.')->middleware('auth:api')->group(function () {
+        Route::as('cart.')->prefix("cart")->middleware('auth:api')->group(function () {
+            Route::post('process', 'CartController@processActions');
+            Route::post('update-item-quantity', 'CartController@updateQuantity');
+            Route::get('items', 'CartController@cartItems');
+        });
+
+        Route::as('wishlist.')->prefix("wishlist")->middleware('auth:api')->group(function () {
+            Route::post('process', 'WishlistController@processActions');
+            Route::get('items', 'WishlistController@wishlistItems');
+        });
+    });
 });

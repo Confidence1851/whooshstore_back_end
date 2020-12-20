@@ -1,29 +1,32 @@
 <?php
 
+use App\Models\Cart;
+use App\Models\CartItem;
+use App\Models\Product;
 use App\Models\User;
 
 /** Returns cart details
      * @return object
      */
-    function getUserCart(){
-        if(session()->has('my_cart')){
-            $cart = session()->get('my_cart');
-        }
-        else{
-            $user = auth('web')->user();
+    function getUserCart($guard = "api"){
+        // if(session()->has('my_cart')){
+        //     $cart = session()->get('my_cart');
+        // }
+        // else{
+        $user = auth($guard)->user();
 
-            $cart = Cart::where('user_id', $user->id)->first();
-            if(empty($cart)){
-                $cart = Cart::create([
-                    'user_id' => $user->id,
-                    'price' => 0,
-                    'discount' => 0,
-                    'total' => 0,
-                    'items' => 0,
-                    'reference' => generateCartHash(),
-                ]);
-            }
+        $cart = Cart::where('user_id', $user->id)->first();
+        if(empty($cart)){
+            $cart = Cart::create([
+                'user_id' => $user->id,
+                'price' => 0,
+                'discount' => 0,
+                'total' => 0,
+                'items' => 0,
+                'reference' => generateCartHash(),
+            ]);
         }
+        // }
 
         return $cart;
     }
@@ -63,7 +66,7 @@ use App\Models\User;
         $cart->save();
 
         // session()->forget('my_cart');
-        session()->put('my_cart' ,$cart );
+        // session()->put('my_cart' ,$cart );
 
         return $cart;
     }
@@ -91,22 +94,22 @@ use App\Models\User;
 
     function userOrderedProduct($user_id){
         $user = User::find($user_id);
-        return $orderedCourses = Product::where('user_id' , $user->id)->whereHas('course')->whereHas('order' , function ($query) {
+        return  Product::where('user_id' , $user->id)->whereHas('course')->whereHas('order' , function ($query) {
             $query->where('status' , 1);
         })->pluck('course_id');
     }
 
 
-    function getMyProducts(){
-        $my_courses = [];
-        if(auth('web')->check()){
-            if(session()->has('my_courses')){
-                $my_courses = session()->get('my_courses');
-            }
-            else{
-                $my_courses = userOrderedCourses(auth('web')->id());
-                session()->put('my_courses',$my_courses);
-            }
-        }
-        return $my_courses;
-    }
+    // function getMyProducts($guard = "api"){
+    //     $my_products = [];
+    //     if(auth($guard)->check()){
+    //         if(session()->has('my_products')){
+    //             $my_products = session()->get('my_products');
+    //         }
+    //         else{
+    //             $my_products = userOrderedProduct(auth($guard)->id());
+    //             session()->put('my_products',$my_products);
+    //         }
+    //     }
+    //     return $my_products;
+    // }

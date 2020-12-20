@@ -4,6 +4,7 @@
 namespace App\Transformers;
 
 use App\Models\Country;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CountryTransformer
 {
@@ -26,5 +27,8 @@ class CountryTransformer
             return $transformer->transform($model);
         });
     }
+
+    
+
 
 }

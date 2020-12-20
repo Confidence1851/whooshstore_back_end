@@ -19,7 +19,7 @@ class CreateCartsTable extends Migration
             $table->decimal('price')->default(0);
             $table->decimal('discount')->default(0);
             $table->decimal('total')->default(0);
-            $table->string('quantity')->default(0);
+            $table->string('items')->default(0);
             $table->string('reference')->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

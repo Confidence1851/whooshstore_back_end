@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Helpers\ApiConstants;
@@ -16,9 +17,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class LoginController extends ApiController{
+class LoginController extends ApiController
+{
     use Profile;
-     
+
     private $userRepo;
 
     public function __construct(UserRepositoryInterface $userRepo)
@@ -82,13 +84,13 @@ class LoginController extends ApiController{
     public function login(Request $request)
     {
 
-        try{
+        try {
             $validator = Validator::make($request->all(), [
                 'email' => 'bail|required|email|max:255',
                 'password' => 'bail|required|string|max:255'
             ]);
 
-            if ($validator->fails()){
+            if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
 
@@ -99,30 +101,23 @@ class LoginController extends ApiController{
                 $userTokens = $user->tokens;
 
                 // Delete exiting tokens
-                foreach($userTokens as $token){
+                foreach ($userTokens as $token) {
                     // $token->revoke();
                     $token->delete();
                 }
                 // Create new token
                 $token = $user->createToken('PersonalAccessToken')->accessToken;
-                $returnData = $this->verifiedData($user , $token);
-                return validResponse('Login successful' , $returnData , $request);
+                $returnData = $this->verifiedData($user, $token);
+                return validResponse('Login successful', $returnData, $request);
             } else {
-                return problemResponse('Incorrect details, try again!' , ApiConstants::AUTH_ERR_CODE , $request);
+                return problemResponse('Incorrect details, try again!', ApiConstants::AUTH_ERR_CODE, $request);
             }
         } catch (ValidationException $e) {
-			$message = "Input validation errors";
-			return inputErrorResponse($message, ApiConstants::VALIDATION_ERR_CODE, $request, $e);
-		} catch (\Exception $e) {
-			$message = 'Something went wrong while processing your request.';
-			return problemResponse($message, ApiConstants::SERVER_ERR_CODE, $request, $e);
-		}
+            $message = "Input validation errors";
+            return inputErrorResponse($message, ApiConstants::VALIDATION_ERR_CODE, $request, $e);
+        } catch (\Exception $e) {
+            $message = 'Something went wrong while processing your request.';
+            return problemResponse($message, ApiConstants::SERVER_ERR_CODE, $request, $e);
+        }
     }
-
-
 }
-
-
-
-
-

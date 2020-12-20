@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Helpers\ApiConstants;
@@ -15,8 +16,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class RegisterController extends ApiController{
-    use Notifications , Profile;
+class RegisterController extends ApiController
+{
+    use Notifications, Profile;
 
 
     private $userRepo;
@@ -27,77 +29,77 @@ class RegisterController extends ApiController{
     }
 
     /**
-    * @OA\Post(
-    ** path="/v1/register",
-    *   tags={"Authentication"},
-    *   summary="Register",
-    *   operationId="register",
-    *
-    *   @OA\Parameter(
-    *      name="name",
-    *      in="query",
-    *      required=true,
-    *      @OA\Schema(
-    *           type="string"
-    *      )
-    *   ),
-    *   @OA\Parameter(
-    *      name="email",
-    *      in="query",
-    *      required=true,
-    *      @OA\Schema(
-    *          type="string"
-    *      )
-    *   ),
-    *   @OA\Parameter(
-    *      name="password",
-    *      in="query",
-    *      required=true,
-    *      @OA\Schema(
-    *          type="string"
-    *      )
-    *   ),
-    *   @OA\Response(
-    *      response=200,
-    *       description="Success",
-    *      @OA\MediaType(
-    *           mediaType="application/json",
-    *      )
-    *   ),
-    *   @OA\Response(
-    *      response=401,
-    *       description="Unauthenticated"
-    *   ),
-    *   @OA\Response(
-    *      response=400,
-    *      description="Bad Request"
-    *   ),
-    *   @OA\Response(
-    *      response=404,
-    *      description="Not found"
-    *   ),
-    *      @OA\Response(
-    *          response=403,
-    *          description="Forbidden"
-    *      )
-    *)
-    **/
-   /**
-    * login api
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * @OA\Post(
+     ** path="/v1/register",
+     *   tags={"Authentication"},
+     *   summary="Register",
+     *   operationId="register",
+     *
+     *   @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="email",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     *   @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Not found"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *)
+     **/
+    /**
+     * login api
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function register(Request $request)
     {
         DB::beginTransaction();
-        try{
+        try {
             $validator = Validator::make($request->all(), [
                 'name' => 'bail|required|string|max:50',
                 'email' => 'bail|required|string|email|max:50|unique:users',
                 'password' => 'bail|required|string|min:6',
             ]);
 
-            if($validator->fails()){
+            if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
 
@@ -110,10 +112,10 @@ class RegisterController extends ApiController{
             $this->sendVerifcationNotification($user);
 
             $token = $user->createToken('PersonalAccessToken')->accessToken;
-            $returnData = $this->verifiedData($user , $token);
+            $returnData = $this->verifiedData($user, $token);
 
             DB::commit();
-            return validResponse('Register successful' , $returnData , $request);
+            return validResponse('Register successful', $returnData, $request);
         } catch (ValidationException $e) {
             DB::rollback();
             $message = "" . (implode(' ', Arr::flatten($e->errors())));
@@ -124,8 +126,4 @@ class RegisterController extends ApiController{
             return problemResponse($message, ApiConstants::SERVER_ERR_CODE, $request, $e);
         }
     }
-
 }
-
-
-

@@ -3,21 +3,21 @@ namespace App\Traits;
 
 use App\Models\Cart as ModelsCart;
 use App\Models\CartItem;
-use App\Models\Foods;
+use App\Models\Product;
 
 trait Cart{
-    public function processCart($dish_id  = null ,$quantity = 1, $plan_id = null){
+    public function processCart($product_id  = null ,$quantity = 1){
         $cart = getUserCart();
 
-        if(!empty($dish_id)){
-            $dish = Foods::find($dish_id);
+        if(!empty($product_id)){
+            $product = Product::find($product_id);
 
-            if(empty($dish)){
+            if(empty($product)){
                 return ['success' => false, 'msg' => 'Item could not be validated!'];
             }
 
 
-            $item = CartItem::where('cart_id' , $cart->id)->where('dish_id' , $dish->id)->first();
+            $item = CartItem::where('cart_id' , $cart->id)->where('product_id' , $product->id)->first();
             if(!empty($item)){
                 $item->delete();
                 $msg = 'Item removed from cart!';
@@ -25,16 +25,16 @@ trait Cart{
                 $type = 'remove';
                 $cart_item = [
                     'quantity' => 1,
-                    'total' => format_money($dish->getPrice()),
+                    'total' => format_money($product->getPrice()),
                 ];
             }
             else{
                 $item = CartItem::create([
                     'cart_id' => $cart->id,
-                    'dish_id' => $dish->id,
+                    'product_id' => $product->id,
                     'quantity' => $quantity,
-                    'price' => $dish->price,
-                    'discount' => $dish->discount ?? 0,
+                    'price' => $product->price,
+                    'discount' => $product->discount ?? 0,
                 ]);
                 $msg = 'Item added to cart!';
                 $nxtAction = 'Remove from cart';
@@ -60,13 +60,13 @@ trait Cart{
     }
 
 
-    public function updateCartItemQuantity($dish_id , $quantity){
+    public function updateCartItemQuantity($product_id , $quantity){
         $cart = getUserCart();
-        $item = CartItem::where('cart_id' , $cart->id)->where('dish_id' , $dish_id)->first();
+        $item = CartItem::where('cart_id' , $cart->id)->where('product_id' , $product_id)->first();
         if(empty($item->id)){
-            $dish = Foods::find($dish_id);
+            $product = Product::find($product_id);
 
-            if(empty($dish)){
+            if(empty($product)){
                 return ['success' => false, 'msg' => 'Item could not be validated!'];
             }
 
@@ -76,7 +76,7 @@ trait Cart{
                 'cart' => $this->cartObject($cart),
                 'item' => [
                     'quantity' => $quantity,
-                    'total' => format_money(($dish->getPrice() * $quantity)),
+                    'total' => format_money(($product->getPrice() * $quantity)),
                 ],
 
             ];

@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Traits\Constants;
 use App\Helpers\ApiConstants;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\ValidationException;
 
 /** Return error api response */
@@ -19,10 +20,10 @@ function problemResponse(string $message = null, int $status_code = null, Reques
 		'msg' => $message,
 		'code' => $code,
 		'success' => false,
-		'error_debug' => empty($trace) ?  null  : $trace->getMessage(),
-		'error_trace' => empty($trace) ?  null  : $trace->getTrace(),
+		'error_debug' => $traceMsg,
+		'error_trace' => $traceTrace,
 	];
-	logger($trace->getMessage() , $trace->getTrace());
+	empty($trace) ? null : logger()->error($trace);
 
 	return response()->json($body)->setStatusCode($code);
 }
@@ -95,3 +96,18 @@ function validResponse(string $message = null, $data = null, $request = null)
         return date($format , strtotime($date));
     }
 
+
+	function collect_pagination($transformer , LengthAwarePaginator $pagination)
+    {
+        $all_pg_data = $pagination->toArray();
+        $data = collect($pagination->getCollection())->map(function ($model) use ($transformer) {
+            return $transformer->transform($model);
+        });
+        unset($all_pg_data['links']); // remove links
+        unset($all_pg_data['data']); // remove old data mapping
+
+        $buildResponse['pagination_meta'] = $all_pg_data;
+        $buildResponse['pagination_meta']["can_load_more"] = $all_pg_data["to"] < $all_pg_data["total"];
+        $buildResponse['data'] = $data;
+        return $buildResponse;
+    }
