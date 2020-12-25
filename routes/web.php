@@ -32,6 +32,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::resource('productcategories', 'ProductCategoryController')->names([
                     'index' => 'index.productcategories'
                 ]);
+                Route::resource('products', 'ProductController')->names([
+                    'index' => 'index.products'
+                ]);
             });
         });
     });
