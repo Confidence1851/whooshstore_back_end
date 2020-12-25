@@ -11,8 +11,13 @@
   
   <link rel="shortcut icon" href="{{ asset('/favicon.ico') }}">
   <!-- plugin css -->
-<link rel="stylesheet" href="{{asset('assets/fonts/feather-font/css/iconfont.css')}}">
-<link rel="stylesheet" href="{{asset('assets/plugins/perfect-scrollbar/perfect-scrollbar.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/fonts/feather-font/css/iconfont.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/plugins/perfect-scrollbar/perfect-scrollbar.css')}}">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/css/bootstrap-colorpicker.min.css" rel="stylesheet">
   <!-- end plugin css -->
   <link href="toastr.css" rel="stylesheet"/>
 
@@ -50,6 +55,14 @@
     @stack('plugin-scripts')
     <!-- end plugin js -->
 
+    <!--other js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/js/bootstrap-colorpicker.min.js"></script> 
+    
+    <script> 
+      $('.colorpicker').colorpicker();
+    </script>
+    <!-- end other js-->
+    
     <!-- common js -->
     <script src="{{asset('assets/js/template.js')}}"></script>
     <!-- end common js -->
