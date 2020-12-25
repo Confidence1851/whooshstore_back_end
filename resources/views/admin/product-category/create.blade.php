@@ -13,7 +13,7 @@ Create Product Category
           <fieldset>
             <div class="form-group">
               <label for="name">Name</label>
-              <input id="name" class="form-control @error('name') is-invalid @enderror" name="name" autocomplete="off" placeholder="Name" value="{{ old('name') }}" type="text">
+              <input id="name" class="form-control @error('name') is-invalid @enderror first" name="name" autocomplete="off" placeholder="Name" value="{{ old('name') }}" type="text">
                @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -22,7 +22,7 @@ Create Product Category
             </div>
             <div class="form-group">
               <label for="slug">Slug</label>
-              <input id="slug" class="form-control @error('slug') is-invalid @enderror" name="slug" autocomplete="off" placeholder="Slug" value="{{ old('slug') }}" type="text">
+              <input id="slug" class="form-control @error('slug') is-invalid @enderror second" name="slug" autocomplete="off" placeholder="Slug" value="{{ old('slug') }}" type="text">
                @error('slug')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -46,3 +46,11 @@ Create Product Category
   </div>
 </div>
 @endsection
+
+@push('other-scripts')
+<script>
+  $(".first").on('keyup',function(){
+    $(".second").val($(this).val());
+});
+</script>
+@endpush

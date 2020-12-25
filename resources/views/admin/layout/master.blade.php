@@ -68,6 +68,7 @@
     <!-- end common js -->
     
     @stack('custom-scripts')
+    @stack('other-scripts')
     {{--  toastr  --}}
    
 </body>
