@@ -7,6 +7,7 @@ use App\Http\Requests\ProductCategory\StoreProductCategory;
 use App\Models\ProductCategory;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductCategoryController extends Controller
 {
@@ -51,7 +52,7 @@ class ProductCategoryController extends Controller
             $productCategoryImage->move('uploads/product-category', $productCategoryImageNewName);
 
             $productCategory->name = $request->name;
-            $productCategory->slug = $request->slug;
+            $productCategory->slug = Str::slug($request->name);
             $productCategory->image = 'uploads/product-category/' . $productCategoryImageNewName;
 
             $productCategory->save();
@@ -71,7 +72,7 @@ class ProductCategoryController extends Controller
     public function show($productCategoryId)
     {
         $productCategory = ProductCategory::findOrFail($productCategoryId);
-        return view('Admin\product-category\edit', compact('productCategory'));
+        return view('Admin\product-category\show', compact('productCategory'));
     }
 
     /**

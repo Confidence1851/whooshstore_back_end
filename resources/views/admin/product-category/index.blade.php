@@ -37,18 +37,34 @@ Product Categories
                   <td>{{ $ProductCategory->name }}</td>
                   <td>{{ $ProductCategory->slug }}</td>
                   <td>
-                    <a href="{{ route('productcategories.edit',$ProductCategory->id) }}" class="btn btn-info btn-sm ">Edit</a>
-                    <form action="{{ route('productcategories.destroy',$ProductCategory->id) }}" method="post" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm">delete</button>
-                    </form> 
-                    {{-- <a href="" class="btn btn-danger btn-sm">Delete</a> --}}
-                    <a href="" class="btn btn-primary btn-sm">View</a>
+                    <a href="{{ route('productcategories.edit',$ProductCategory->id) }}" class="btn btn-outline-info btn-sm ">Edit</a>
+                    <a href="{{ route('productcategories.show',$ProductCategory->id) }}" class="btn btn-outline-primary btn-sm">View</a>
+
+                    <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#del-{{$ProductCategory->id}}">Delete</a>
+                        <div class="modal fade bd-example-modal-md" id="del-{{$ProductCategory->id}}">
+                            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header mb-3">
+                                        <h5 class="modal-title">Delete Product Category </h5>
+                                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button></h5>
+                                    </div>
+                                    <div class="modal-body">
+                                      <small> 
+                                      Are you sure? Deleting this would Remove this category from the database
+                                      </small>
+                                    <form action="{{ route('productcategories.destroy',$ProductCategory->id) }}" method="post">
+                                      @csrf @method('delete')
+                                        <div class="modal-footer">
+                                            <button class="btn btn-outline-info btn-sm" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-outline-danger btn-sm" >Proceed</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                  </td>
                 </tr>
                   @endforeach
-                
               </tbody>
             </table>
           </div>
