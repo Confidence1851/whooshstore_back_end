@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 @section('title')
-Create Product Category
+Product Category
 @endsection
 @section('content')
 <nav class="page-breadcrumb">
@@ -13,7 +13,7 @@ Create Product Category
   <div class="col-lg-10 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Create Product Category</h4>
+        <h4 class="card-title">Product Category</h4>
         <p>Name: {{$productCategory->name}}</p>
         <p>Slug: {{$productCategory->slug}}</p>
         <div>

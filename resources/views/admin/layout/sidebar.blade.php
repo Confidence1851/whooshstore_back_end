@@ -60,11 +60,21 @@
         </a>
       </li>
       <li class="nav-item">
-      
-        <a href="{{ url('') }}" class="nav-link">
-          <i class="link-icon" data-feather="users"></i>
+        <a data-toggle="collapse" href="#users" role="button"  aria-controls="usee" class="nav-link">
+          <i class="link-icon" data-feather="package"></i>
           <span class="link-title">Users</span>
+          <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
+         <div class="collapse" id="users">
+          <ul class="nav sub-menu">
+            <li class="nav-item">
+              <a href="{{ url('/admin/users') }}" class="nav-link">Index</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url('/admin/users/create') }}" class="nav-link">Create</a>
+            </li>
+          </ul>
+        </div>
       </li>
     </ul>
   </div>
