@@ -35,6 +35,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::resource('products', 'ProductController')->names([
                     'index' => 'index.products'
                 ]);
+                Route::resource('users', 'UsersController')->names([
+                    'index' => 'index.users'
+                ]);
             });
         });
     });
