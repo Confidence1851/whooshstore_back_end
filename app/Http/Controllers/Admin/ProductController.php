@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductCategory\StoreProductCategory;
+use App\Http\Requests\Product\StoreProduct;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Exception;
@@ -36,8 +36,11 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $size = ['XXS','XS','S','M','L','XL','XXL','XXXL'];
+        $types = ['New','Featured'];
+        $status = ['Inactive','Active'];
         $categories = ProductCategory::get();
-        return view('Admin\product\create', compact('categories'));
+        return view('Admin\product\create', compact('categories','size','types','status'));
     }
 
     /**
