@@ -30,7 +30,7 @@
 
   @stack('style')
 </head>
-<body data-base-url="{{url('/')}}" class="loaded nimbus-is-editor settings-open sidebar-dark">
+<body data-base-url="{{url('/')}}" class="loaded nimbus-is-editor sidebar-dark">
 <script src="{{asset('assets/js/spinner.js')}}"></script>
 
 
