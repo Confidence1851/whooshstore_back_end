@@ -18,9 +18,9 @@ User
         <p>Last Name: {{$user->lastname}}</p>
         <p>Email: {{$user->email}}</p>
         <p>Role: 
-          @if ($user->role == 0)
+          @if ($user->role == 1)
             admin
-          @elseif($user->role==1)
+          @elseif($user->role==2)
             vendor
           @else
             user

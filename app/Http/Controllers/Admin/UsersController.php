@@ -15,7 +15,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $Users = User::paginate(10);
+        $Users = User::where('role', 0)->paginate(10);
         return view('Admin\user\index', compact('Users'));
     }
 
@@ -47,7 +47,7 @@ class UsersController extends Controller
             $user->email = $request->email;
             $user->role = $request->role;
 
-            $user->is_admin = $retVal = ($request->role==0) ? 1 : 0 ;
+            $user->is_admin = $retVal = ($request->role==1) ? 1 : 0 ;
 
             $user->password = bcrypt($request->password);
 
@@ -106,7 +106,7 @@ class UsersController extends Controller
             $user->email = $request->email;
             $user->role = $request->role;
 
-            $user->is_admin = $retVal = ($request->role==0) ? 1 : 0 ;
+            $user->is_admin = $retVal = ($request->role==1) ? 1 : 0 ;
 
             $user->city = $request->city;
             $user->state = $request->state;
