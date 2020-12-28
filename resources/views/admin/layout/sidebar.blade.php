@@ -53,12 +53,14 @@
           </ul>
         </div>
       </li>
+      <li class="nav-item nav-category">Orders</li>
       <li class="nav-item">
         <a href="{{ url('') }}" class="nav-link">
           <i class="link-icon" data-feather="briefcase"></i>
           <span class="link-title">Orders</span>
         </a>
       </li>
+      <li class="nav-item nav-category">Users</li>
       <li class="nav-item">
         <a data-toggle="collapse" href="#users" role="button"  aria-controls="user" class="nav-link">
           <i class="link-icon" data-feather="package"></i>
@@ -76,6 +78,7 @@
           </ul>
         </div>
       </li>
+      <li class="nav-item nav-category">Vendors</li>
       <li class="nav-item">
         <a data-toggle="collapse" href="#vendors" role="button"  aria-controls="vendors" class="nav-link">
           <i class="link-icon" data-feather="package"></i>
