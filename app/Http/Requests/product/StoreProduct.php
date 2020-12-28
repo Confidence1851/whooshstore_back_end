@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use App\models\Product;
 class StoreProduct extends FormRequest
 {
     /**
@@ -23,10 +23,31 @@ class StoreProduct extends FormRequest
      */
     public function rules()
     {
+        $request = request();
+        $product = Product::find($request["product"]);
+        if(!empty($product)){
+            $name_rule = "required|string";
+        }
+        else{
+            $name_rule = 'required|unique:products';
+        }
         return [
-            'name' => 'required|unique:products',
+            'product_name' => $name_rule,
             'slug' => 'required',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'sku' => 'nullable',
+            'quantity' => 'required',
+            'price' => 'required',
+            'video' => 'nullable',
+            'description' => 'required',
+            'details' => 'nullable',
+            'tags' => 'nullable',
+            'percent_off' => 'nullable',
+            'weight' => 'nullable',
+            'color' => 'nullable',
+            'size' => 'nullable',
+            'type' => 'required',
+            'status' => 'required',
         ];
     }
 }

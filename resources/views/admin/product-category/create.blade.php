@@ -3,6 +3,12 @@
 Create Product Category
 @endsection
 @section('content')
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url('/admin/productcategories') }}">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Product Category</li>
+  </ol>
+</nav>
 <div class="row justify-content-center">
   <div class="col-lg-10 grid-margin stretch-card">
     <div class="card">

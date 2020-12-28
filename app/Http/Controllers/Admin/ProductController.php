@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -40,7 +41,7 @@ class ProductController extends Controller
         $types = ['New','Featured'];
         $status = ['Inactive','Active'];
         $categories = ProductCategory::get();
-        return view('Admin\product\create', compact('categories','size','types','status'));
+        return view('Admin\product\create', compact('categories', 'size', 'types', 'status'));
     }
 
     /**
@@ -51,11 +52,13 @@ class ProductController extends Controller
      */
     public function store(StoreProduct  $request)
     {
+
+        // dd($request->all());
         try {
             $product = new Product;
 
-            $product->name = $request->name;
-            $product->slug = $request->slug;
+            $product->product_name = $request->product_name;
+            $product->slug = Str::slug($request->product_name);
             $product->quantity = $request->quantity;
             $product->price = $request->price;
             $product->description = $request->description;
@@ -63,12 +66,15 @@ class ProductController extends Controller
             $product->tags = $request->tags;
             $product->percent_off = $request->percent_off;
             $product->weight = $request->weight;
+            $product->video = $request->video;
             $product->color = $request->color;
             $product->size = $request->size;
             $product->type = $request->type;
             $product->status = $request->status;
-
+            $product->category_id = $request->category_id;
+       
             $product->save();
+
             toastr()->success('Data has been saved successfully!');
             return redirect()->route('index.products');
         } catch (Exception $e) {
@@ -97,7 +103,11 @@ class ProductController extends Controller
     public function edit($productId)
     {
         $product = Product::findOrFail($productId);
-        return view('Admin\product\edit', compact('product'));
+        $categories = ProductCategory::get();
+        $size = ['XXS','XS','S','M','L','XL','XXL','XXXL'];
+        $types = ['New','Featured'];
+        $status = ['Inactive','Active'];
+        return view('Admin\product\edit', compact('product', 'categories', 'size', 'types', 'status'));
     }
 
     /**
@@ -107,30 +117,33 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreProductCategory $request, $productCategoryId)
+    public function update(StoreProduct $request, $productId)
     {
+        // dd($request->all());
+
         try {
-            $productCategory = ProductCategory::findOrFail($productCategoryId);
+            $product = Product::findOrFail($productId);
 
-            if ($request->hasFile('image')) {
-                $productCategoryImage = $request->image;
+            $product->product_name = $request->product_name;
+            $product->slug = Str::slug($request->product_name);
+            $product->quantity = $request->quantity;
+            $product->price = $request->price;
+            $product->description = $request->description;
+            $product->details = $request->details;
+            $product->tags = $request->tags;
+            $product->percent_off = $request->percent_off;
+            $product->weight = $request->weight;
+            $product->video = $request->video;
+            $product->color = $request->color;
+            $product->size = $request->size;
+            $product->type = $request->type;
+            $product->status = $request->status;
+            $product->category_id = $request->category_id;
+            
+            $product->update();
 
-                $productCategoryImageNewName = time() . $productCategoryImage->getClientOriginalName();
-
-                $productCategoryImage->move('uploads/product-category', $productCategoryImageNewName);
-
-                $productCategoryImage->image = 'uploads/product-category/' . $productCategoryImageNewName;
-
-                $productCategory->save();
-            }
-
-            $productCategory->name = $request->name;
-            $productCategory->slug = $request->slug;
-            $productCategory->image = 'uploads/product-category/' . $productCategoryImageNewName;
-
-            $productCategory->update();
             toastr()->success('Data has been updated successfully!');
-            return redirect()->route('index.productcategories');
+            return redirect()->route('index.products');
         } catch (Exception $e) {
             return back()->with("error", $e->getMessage());
         }
@@ -142,19 +155,15 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($productCategoryId)
+    public function destroy($productId)
     {
         try {
-            $productCategory = ProductCategory::findOrFail($productCategoryId);
-
-            if (file_exists($productCategory->image)) {
-                unlink($productCategory->image);
-            }
-
-            $productCategory->delete();
+            $product = Product::findOrFail($productId);
+            $product->delete();
 
             toastr()->success('Data has been Deleted successfully!');
             return redirect()->back();
+            
         } catch (Exception $e) {
             return back()->with("error", $e->getMessage());
         }

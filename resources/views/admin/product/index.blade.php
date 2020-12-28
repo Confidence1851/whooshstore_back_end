@@ -25,7 +25,7 @@ Products
               <thead>
                 <tr>
                   <th>Image</th>
-                  <th>Name</th>
+                  <th>Product Name</th>
                   <th>Category</th>
                   <th>Slug</th>
                   <th>Quantity</th>
@@ -38,23 +38,37 @@ Products
                   @foreach ($Products as $Product)
                 <tr>
                   <td><img src="{{ asset($Product->image) }}" alt=""></td>
-                  <td>{{ $Product->name }}</td>
+                  <td>{{ $Product->product_name }}</td>
                   <td>{{ $Product->Category->name }}</td>
                   <td>{{ $Product->slug }}</td>
                   <td>{{ $Product->quantity }}</td>
                   <td>{{ $Product->price }}</td>
                   <td>{{ $Product->status }}</td>
                   <td>
-                    <a href="" class="btn btn-info btn-sm ">Edit</a>
-                    <form action="" method="post" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm">Delete</button>
-                    </form> 
-                    {{-- <a href="" class="btn btn-danger btn-sm">Delete</a> --}}
+                    <a href="{{ route('products.edit',$Product->id) }}" class="btn btn-info btn-sm ">Edit</a>
                     <a href="" class="btn btn-primary btn-sm">View</a>
-                 </td>
-                </tr>
+
+                    <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#del-{{$Product->id}}">Delete</a>
+                    <div class="modal fade bd-example-modal-md" id="del-{{$Product->id}}">
+                        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header mb-3">
+                                    <h5 class="modal-title">Delete Product Category </h5>
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button></h5>
+                                </div>
+                                <div class="modal-body">
+                                  <small> 
+                                  Are you sure? Deleting this would Remove this category from the database
+                                  </small>
+                                <form action="{{ route('products.destroy',$Product->id) }}" method="post">
+                                  @csrf @method('delete')
+                                    <div class="modal-footer">
+                                        <button class="btn btn-outline-info btn-sm" type="button" class="close" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" >Proceed</button>
+                                    </div>
+                                </form>
+                        </td>
+                      </tr>
                   @endforeach
                 
               </tbody>

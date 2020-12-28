@@ -4,9 +4,14 @@ Create Product
 @endsection
 @push('plugin-styles')
 <link rel="stylesheet" href="{{ asset('assets/plugins/simplemde/simplemde.min.css') }}">
-  {{-- {!! Html::style('/') !!} --}}
 @endpush
 @section('content')
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url('/admin/products') }}">Back</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Create Product</li>
+  </ol>
+</nav>
 <div class="row justify-content-center">
   <div class="col-lg-10 grid-margin stretch-card">
     <div class="card">
@@ -16,9 +21,9 @@ Create Product
          @csrf
           <fieldset>
             <div class="form-group">
-              <label for="name">Product Name</label>
-              <input id="name" class="form-control @error('name') is-invalid @enderror first" name="name" autocomplete="off" placeholder="Name" value="{{ old('name') }}" type="text">
-               @error('name')
+              <label for="product_name">Product Name</label>
+              <input id="product_name" class="form-control @error('product_name') is-invalid @enderror first" name="product_name" autocomplete="off" placeholder="product_name" value="{{ old('product_name') }}" type="text">
+               @error('product_name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -50,7 +55,7 @@ Create Product
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="percent_off">Sku</label>
-                  <input id="sku" class="form-control @error('sku') is-invalid @enderror first" name="sku" autocomplete="off" placeholder="sku" value="{{ old('sku') }}" type="text">
+                  <input id="sku" class="form-control @error('sku') is-invalid @enderror" name="sku" autocomplete="off" placeholder="sku" value="{{ old('sku') }}" type="text">
                    @error('sku')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -61,7 +66,7 @@ Create Product
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="quantity">Product Quantity</label>
-                  <input id="quantity" class="form-control @error('quantity') is-invalid @enderror first" name="quantity" autocomplete="off" placeholder="quantity" value="{{ old('quantity') }}" type="number">
+                  <input id="quantity" class="form-control @error('quantity') is-invalid @enderror" name="quantity" autocomplete="off" placeholder="quantity" value="{{ old('quantity') }}" type="number">
                    @error('quantity')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -72,7 +77,7 @@ Create Product
             </div>
             <div class="form-group">
               <label for="price">Product Price</label>
-              <input id="price" class="form-control @error('price') is-invalid @enderror first" name="price" autocomplete="off" placeholder="price" value="{{ old('price') }}" type="number">
+              <input id="price" class="form-control @error('price') is-invalid @enderror" name="price" autocomplete="off" placeholder="price" value="{{ old('price') }}" type="number">
                @error('price')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -83,7 +88,7 @@ Create Product
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="percent_off">Percent Off(optional)</label>
-                  <input id="percent_off" class="form-control @error('percent_off') is-invalid @enderror first" name="percent_off" autocomplete="off" placeholder="percent_off" value="{{ old('percent_off') }}" type="number">
+                  <input id="percent_off" class="form-control @error('percent_off') is-invalid @enderror" name="percent_off" autocomplete="off" placeholder="percent_off" value="{{ old('percent_off') }}" type="number">
                    @error('percent_off')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -94,7 +99,7 @@ Create Product
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="weight">Product Weight(optional)</label>
-                  <input id="weight" class="form-control @error('weight') is-invalid @enderror first" name="weight" autocomplete="off" placeholder="weight" value="{{ old('weight') }}" type="number">
+                  <input id="weight" class="form-control @error('weight') is-invalid @enderror" name="weight" autocomplete="off" placeholder="weight" value="{{ old('weight') }}" type="number">
                    @error('weight')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -105,7 +110,7 @@ Create Product
             </div>
             <div class="form-group">
               <label for="color">Colour(optional)</label>
-              <input id="color" class="form-control @error('color') is-invalid @enderror first" name="color" autocomplete="off" placeholder="color" value="{{ old('color') }}" type="text">
+              <input id="color" class="form-control @error('color') is-invalid @enderror" name="color" autocomplete="off" placeholder="color" value="{{ old('color') }}" type="text">
                @error('color')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -116,7 +121,7 @@ Create Product
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="tags">Tags(optional)</label>
-                  <input id="tags" class="form-control @error('tags') is-invalid @enderror first" name="tags" autocomplete="off" placeholder="tags" value="{{ old('tags') }}" type="text">
+                  <input id="tags" class="form-control @error('tags') is-invalid @enderror" name="tags" autocomplete="off" placeholder="tags" value="{{ old('tags') }}" type="text">
                    @error('tags')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -126,8 +131,8 @@ Create Product
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="details">DetailsProduct details(optional)</label>
-                  <input id="details" class="form-control @error('details') is-invalid @enderror first" name="details" autocomplete="off" placeholder="details" value="{{ old('details') }}" type="text">
+                  <label for="details">Product Details(optional)</label>
+                  <input id="details" class="form-control @error('details') is-invalid @enderror" name="details" autocomplete="off" placeholder="details" value="{{ old('details') }}" type="text">
                    @error('details')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -212,4 +217,11 @@ Create Product
 
 @push('custom-scripts')
 <script src="{{ asset('assets/js/tinymce.js') }}"></script>
+@endpush
+@push('other-scripts')
+<script>
+  $(".first").on('keyup',function(){
+    $(".second").val($(this).val());
+});
+</script>
 @endpush
