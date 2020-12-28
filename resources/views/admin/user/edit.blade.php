@@ -46,20 +46,20 @@ Edit User
                   <select class="form-control @error('role') is-invalid @enderror first" name="role" id="role">
                     <option disabled selected value="2">Select a role</option>
                     <option 
-                    @if ($user->role==0)
-                        selected
-                    @endif
-                    value="0">Admin</option>
-                    <option 
                     @if ($user->role==1)
                         selected
                     @endif
-                    value="1">Vendor</option>
+                    value="1">Admin</option>
                     <option 
                     @if ($user->role==2)
                         selected
                     @endif
-                    value="2">User</option>
+                    value="2">Vendor</option>
+                    <option 
+                    @if ($user->role==0)
+                        selected
+                    @endif
+                    value="0">User</option>
                   </select>
                     @error('role')
                         <span class="invalid-feedback" role="alert">
@@ -69,7 +69,7 @@ Edit User
                 </div>
                 <div class="form-group">
                   <label for="city">City</label>
-                  <input id="city" class="form-control @error('city') is-invalid @enderror second" name="city" autocomplete="off" placeholder="City" value="{{ $user->city }}" type="text">
+                  <input id="city" class="form-control @error('city') is-invalid @enderror " name="city" autocomplete="off" placeholder="City" value="{{ $user->city }}" type="text">
                    @error('state')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -80,7 +80,7 @@ Edit User
               <div class="col-5">
                 <div class="form-group">
                   <label for="state">State</label>
-                  <input id="state" class="form-control @error('state') is-invalid @enderror second" name="state" autocomplete="off" placeholder="state" value="{{ $user->state }}" type="text">
+                  <input id="state" class="form-control @error('state') is-invalid @enderror " name="state" autocomplete="off" placeholder="state" value="{{ $user->state }}" type="text">
                    @error('state')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -89,7 +89,7 @@ Edit User
                 </div>
                 <div class="form-group">
                   <label for="country">Country</label>
-                  <input id="country" class="form-control @error('country') is-invalid @enderror second" name="country" autocomplete="off" placeholder="Country" value="{{ $user->country }}" type="text">
+                  <input id="country" class="form-control @error('country') is-invalid @enderror " name="country" autocomplete="off" placeholder="Country" value="{{ $user->country }}" type="text">
                    @error('country')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -98,7 +98,7 @@ Edit User
                 </div>
                 <div class="form-group">
                   <label for="address">Address</label>
-                  <textarea class="form-control @error('country') is-invalid @enderror second" name="address" id="address" rows="5">{{$user->address }}</textarea>
+                  <textarea class="form-control @error('country') is-invalid @enderror " name="address" id="address" rows="5">{{$user->address }}</textarea>
                    @error('address')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -107,7 +107,7 @@ Edit User
                 </div>
                 <div class="form-group">
                   <label for="mobile">Mobile</label>
-                  <input id="mobile" class="form-control @error('mobile') is-invalid @enderror second" name="phone" autocomplete="off" placeholder="Mobile" value="{{ $user->mobile }}" type="tel">
+                  <input id="mobile" class="form-control @error('mobile') is-invalid @enderror " name="phone" autocomplete="off" placeholder="Mobile" value="{{ $user->phone }}" type="tel">
                    @error('mobile')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -116,7 +116,7 @@ Edit User
                 </div>
                 <div class="form-group">
                   <label for="phone">Phone</label>
-                  <input id="phone" class="form-control @error('phone') is-invalid @enderror second" name="phone2" autocomplete="off" placeholder="Phone" value="{{ $user->phone }}" type="tel">
+                  <input id="phone" class="form-control @error('phone') is-invalid @enderror " name="phone2" autocomplete="off" placeholder="Phone" value="{{ $user->phone2 }}" type="tel">
                    @error('phone')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

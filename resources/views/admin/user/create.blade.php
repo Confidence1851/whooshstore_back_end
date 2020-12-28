@@ -44,9 +44,9 @@ Create User
                 <label for="role">Role</label>
                 <select class="form-control @error('role') is-invalid @enderror first" name="role" id="role">
                   <option disabled selected value="2">Select a role</option>
-                  <option value="0">Admin</option>
-                  <option value="1">Vendor</option>
-                  <option value="2">User</option>
+                  <option value="1">Admin</option>
+                  <option value="2">Vendor</option>
+                  <option value="0">User</option>
                 </select>
                   @error('role')
                       <span class="invalid-feedback" role="alert">

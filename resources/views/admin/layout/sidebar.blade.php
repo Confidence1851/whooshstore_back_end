@@ -1,7 +1,7 @@
 <nav class="sidebar">
   <div class="sidebar-header">
     <a href="#" class="sidebar-brand">
-      Kiosk<span>extra</span>
+      Kiosk<span>Xtra</span>
     </a>
     <div class="sidebar-toggler not-active">
       <span></span>
@@ -60,7 +60,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a data-toggle="collapse" href="#users" role="button"  aria-controls="usee" class="nav-link">
+        <a data-toggle="collapse" href="#users" role="button"  aria-controls="user" class="nav-link">
           <i class="link-icon" data-feather="package"></i>
           <span class="link-title">Users</span>
           <i class="link-arrow" data-feather="chevron-down"></i>
@@ -72,6 +72,23 @@
             </li>
             <li class="nav-item">
               <a href="{{ url('/admin/users/create') }}" class="nav-link">Create</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a data-toggle="collapse" href="#vendors" role="button"  aria-controls="vendors" class="nav-link">
+          <i class="link-icon" data-feather="package"></i>
+          <span class="link-title">Vendors</span>
+          <i class="link-arrow" data-feather="chevron-down"></i>
+        </a>
+         <div class="collapse" id="vendors">
+          <ul class="nav sub-menu">
+            <li class="nav-item">
+              <a href="{{ url('/admin/vendors') }}" class="nav-link">Index</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url('/admin/vendors/approve') }}" class="nav-link">Approve Products</a>
             </li>
           </ul>
         </div>

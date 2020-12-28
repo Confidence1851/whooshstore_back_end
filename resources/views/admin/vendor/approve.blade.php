@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 @section('title')
-Products
+Approve Products
 @endsection
 @section('content')
 {{--  css  --}}
@@ -11,7 +11,7 @@ Products
 <nav class="page-breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ url('/admin/dashboard') }}">Admin Dashboard</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Product</li>
+      <li class="breadcrumb-item active" aria-current="page">Approve Product</li>
     </ol>
   </nav>
   
@@ -19,12 +19,13 @@ Products
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          <h6 class="card-title">Product</h6>
+          <h6 class="card-title">Products</h6>
           <div class="table-responsive">
             <table id="dataTableExample" class="table">
               <thead>
                 <tr>
                   <th>Image</th>
+                  <th>Vendor</th>
                   <th>Name</th>
                   <th>Category</th>
                   <th>Slug</th>
@@ -38,6 +39,7 @@ Products
                   @foreach ($Products as $Product)
                 <tr>
                   <td><img src="{{ asset($Product->image) }}" alt=""></td>
+                  <td>{{ $Product->Vendor->firstname }} {{ $Product->Vendor->lastname }}</td>
                   <td>{{ $Product->name }}</td>
                   <td>{{ $Product->Category->name }}</td>
                   <td>{{ $Product->slug }}</td>
@@ -45,11 +47,10 @@ Products
                   <td>{{ $Product->price }}</td>
                   <td>{{ $Product->status }}</td>
                   <td>
-                    <a href="" class="btn btn-info btn-sm ">Edit</a>
-                    <form action="" method="post" class="d-inline">
+                    <form method="post" action="{{ route('approveProduct',$Product->id) }}" class="d-inline">
                         @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <input type="hidden" name="status" value="Active">
+                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
                     </form> 
                     {{-- <a href="" class="btn btn-danger btn-sm">Delete</a> --}}
                     <a href="" class="btn btn-primary btn-sm">View</a>

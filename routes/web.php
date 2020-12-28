@@ -38,6 +38,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::resource('users', 'UsersController')->names([
                     'index' => 'index.users'
                 ]);
+                Route::get('/vendors/approve', 'VendorsController@approve')->name('vendors.approve');
+                Route::post('/vendors/approveProduct/{id}', 'VendorsController@approveProduct')->name('approveProduct');
+                Route::resource('vendors', 'VendorsController')->names([
+                    'index' => 'index.vendors'
+                ]);
             });
         });
     });
