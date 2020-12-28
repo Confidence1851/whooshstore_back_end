@@ -60,14 +60,27 @@ User
                 <td>{{ $Product->price }}</td>
                 <td>{{ $Product->status }}</td>
                 <td>
+                  <a href="" class="btn btn-primary btn-sm">View</a>
                   <a href="" class="btn btn-info btn-sm ">Edit</a>
+                  @if ($Product->status != "Active")
+                    <form method="post" action="{{ route('approveProduct',$Product->id) }}" class="d-inline">
+                      @csrf
+                      <input type="hidden" name="status" value="Active">
+                      <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                    </form> 
+                  @else
+                    <form method="post" action="{{ route('approveProduct',$Product->id) }}" class="d-inline">
+                      @csrf
+                      <input type="hidden" name="status" value="Inactive">
+                      <button type="submit" class="btn btn-warning btn-sm">Disapprove</button>
+                    </form> 
+                  @endif
                   <form action="" method="post" class="d-inline">
                       @csrf
                       @method('DELETE')
                       <button class="btn btn-danger btn-sm">Delete</button>
                   </form> 
                   {{-- <a href="" class="btn btn-danger btn-sm">Delete</a> --}}
-                  <a href="" class="btn btn-primary btn-sm">View</a>
                </td>
               </tr>
                 @endforeach
