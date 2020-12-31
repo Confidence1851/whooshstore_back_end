@@ -154,7 +154,12 @@ Create Product
               <div class="col-md-12 grid-margin stretch-card">
                <div class="form-group">
                 <h4 class="card-title">Description</h4>
-                <textarea class="form-control" name="description" id="tinymceExample" rows="5"></textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="tinymceExample" rows="5">{{ old('description') }}</textarea>
+                  @error('description')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                 @enderror
                </div>
               </div>
             </div>
