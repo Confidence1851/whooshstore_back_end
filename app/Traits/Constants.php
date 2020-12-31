@@ -142,5 +142,7 @@ trait Constants
         ];
     }
 
+    public $productImagePath = "images/products";
+
 
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class WebController extends Controller
 {
     //VIEWS CONTROLLERS
+    
 
     /**
      * function for index view
@@ -63,7 +64,8 @@ class WebController extends Controller
     */
     public function read_file($path)
     {
-        //return getFileFromPrivateStorage(decrypt($path));
+        // dd(decrypt($path));
+        return getFileFromPrivateStorage(decrypt($path));
     }
 
 }
