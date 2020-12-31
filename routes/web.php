@@ -1,6 +1,6 @@
 <?php
 
-define(PHP_VERSION , "7.4.8");
+define(PHP_VERSION, "7.4.8");
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebController;
@@ -23,6 +23,8 @@ Route::get('/', function () {
 });
 
 Route::namespace('App\Http\Controllers')->group(function () {
+    Route::get('/file/{path}', 'WebController@read_file')->name('read_file');
+
     Route::prefix('admin')->group(function () {
         Route::middleware(['is_admin'])->group(function () {
             Route::get('dashboard', 'HomeController@adminHome')->name('admin.dashboard');
@@ -35,6 +37,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::resource('products', 'ProductController')->names([
                     'index' => 'index.products'
                 ]);
+                Route::get('/products/images/{product}', 'ProductController@images')->name('products.images');
+                Route::post('/products.save-image', 'ProductController@saveImage')->name('products.image.save');
+
                 Route::resource('users', 'UsersController')->names([
                     'index' => 'index.users'
                 ]);

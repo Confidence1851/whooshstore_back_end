@@ -17,7 +17,7 @@ class CreateProductImagesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id')->index();
             $table->string('image');    
-            $table->enum('status', ['Inactive', 'Active']);
+            $table->enum('status', ['Inactive', 'Active']); // Active for default image
             $table->timestamps();
             $table->foreign("product_id")->references("id")->on("products")->cascadeOnDelete();
         });
