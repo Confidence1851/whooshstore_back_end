@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             //role 0->admin 1-> vendor 2->user
             $table->tinyInteger('role')->nullable()->default(2);
-            $table->boolean('is_admin')->nullable()->default(0);
             $table->string('password');
             $table->string('city')->nullable();
             $table->string('state')->nullable();

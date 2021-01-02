@@ -37,6 +37,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::resource('products', 'ProductController')->names([
                     'index' => 'index.products'
                 ]);
+                Route::post('/products.delete-image/{product}', 'ProductController@deleteImage')->name('products.image.delete');
                 Route::get('/products/images/{product}', 'ProductController@images')->name('products.images');
                 Route::post('/products.save-image', 'ProductController@saveImage')->name('products.image.save');
 

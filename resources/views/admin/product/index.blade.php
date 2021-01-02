@@ -47,7 +47,10 @@
                                         <td>
                                             <a href="{{ route('products.edit', $product->id) }}"
                                                 class="btn btn-info btn-sm ">Edit</a>
+
                                             <a href="" class="btn btn-primary btn-sm">View</a>
+                                            <a href="{{ route('products.images', $product->id) }}"
+                                                class="btn btn-success btn-sm">update image</a>
 
                                             <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal"
                                                 data-target="#del-{{ $product->id }}">Delete</a>
