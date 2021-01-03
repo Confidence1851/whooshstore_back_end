@@ -67,7 +67,7 @@
     <!-- common js -->
     <script src="{{asset('assets/js/template.js')}}"></script>
     <!-- end common js -->
-    
+    @stack('delete-modal')
     @stack('custom-scripts')
     @stack('other-scripts')
     {{--  toastr  --}}

@@ -57,6 +57,9 @@
                                                 <input type="hidden" name="status" value="{{ ($product->status=='Active') ? 'Inactive' : 'Active'}}">
                                                 <button type="submit" class="btn btn-warning btn-sm">{{ ($product->status=='Active') ? 'Deactivate' : 'Activate'}}</button>
                                             </form> 
+                                            <a href="{{ route('products.images', $product->id) }}"
+                                                class="btn btn-success btn-sm">update image</a>
+
                                             <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal"
                                                 data-target="#del-{{ $product->id }}">Delete</a>
                                             <div class="modal fade bd-example-modal-md" id="del-{{ $product->id }}">

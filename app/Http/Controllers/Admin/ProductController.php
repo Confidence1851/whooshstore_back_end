@@ -170,7 +170,7 @@ class ProductController extends Controller
         $data = $request->validate([
             "image_id" => "nullable|string|exists:product_images,id",
             "product_id" => "required|string|exists:products,id",
-            "image" => "required|image"
+            "image" => "required|image|mimes:jpeg,png,jpg,gif,svg"
         ]);
 
         // dd($data);
@@ -185,7 +185,7 @@ class ProductController extends Controller
         }
 
         if (!empty($imageFile = $request->file("image"))) {
-            $newImageFilename = putFileInPrivateStorage($imageFile, $this->productImagePath);
+            $newImageFilename = resizeImageandSave($imageFile, $this->productImagePath);
             if ($issetImage) {
                 deleteFileFromPrivateStorage($image->getImage());
             }
@@ -194,5 +194,14 @@ class ProductController extends Controller
         }
         toastr()->success('Image has been saved successfully!');
         return back();
+    }
+
+    public function deleteImage(Request $request,$product){
+        dd($request->all());
+        $image = ProductImage::find($product);
+        $issetImage = !empty($image);
+        if ($issetImage) {
+            deleteFileFromPrivateStorage($image->getImage());
+        }
     }
 }

@@ -60,27 +60,27 @@ function putFileInPrivateStorage($file , $path){
     return $filename;
 }
 
-// function resizeImageandSave($image ,$path , $disk = 'local', $width = 300 , $height = 300){
-//     // create new image with transparent background color
-//     $background = Image::canvas($width, $height, '#ffffff');
+function resizeImageandSave($image ,$path , $disk = 'local', $width = 300 , $height = 300){
+    // create new image with transparent background color
+    $background = Image::canvas($width, $height, '#ffffff');
 
-//     // read image file and resize it to 262x54
-//     $img = Image::make($image);
-//     //Resize image
-//     $img->resize($width, $height, function ($constraint) {
-//         $constraint->aspectRatio();
-//         $constraint->upsize();
-//     });
+    // read image file and resize it to 262x54
+    $img = Image::make($image);
+    //Resize image
+    $img->resize($width, $height, function ($constraint) {
+        $constraint->aspectRatio();
+        $constraint->upsize();
+    });
 
-//     // insert resized image centered into background
-//     $background->insert($img, 'center');
+    // insert resized image centered into background
+    $background->insert($img, 'center');
 
-//     // save
-//     $filename = uniqid().'.'.$image->getClientOriginalExtension();
-//     $path = $path.'/'.$filename;
-//     Storage::disk($disk)->put($path, (string) $background->encode());
-//     return $filename;
-// }
+    // save
+    $filename = uniqid().'.'.$image->getClientOriginalExtension();
+    $path = $path.'/'.$filename;
+    Storage::disk($disk)->put($path, (string) $background->encode());
+    return $filename;
+}
 
 // Returns full public path
 function my_asset($path = null ){
