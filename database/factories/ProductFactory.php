@@ -31,6 +31,7 @@ class ProductFactory extends Factory
             'product_name' => $name,
             'slug' => $slug,
             'category_id' => Productcategory::factory(),
+            'user_id' => 2,
             'sku' => '1',
             'quantity' => '10',
             'price' => 1499,

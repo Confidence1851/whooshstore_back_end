@@ -28,6 +28,7 @@ Vendors
                   <th>Email</th>
                   <th>No of Products</th>
                   <th>Phone</th>
+                  <th>Date Added</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -42,8 +43,9 @@ Vendors
                   <td>
                     {{ $user->phone}} 
                   </td>
+                  <td>{{ $user->created_at->format('d-M-Y')}}</td>
                   <td>
-                    <a href="{{ route('vendors.edit',$user->id) }}" class="btn btn-outline-info btn-sm ">Edit</a>
+                    <a href="{{ route('users.edit',$user->id) }}" class="btn btn-outline-info btn-sm ">Edit</a>
                     <a href="{{ route('vendors.show',$user->id) }}" class="btn btn-outline-primary btn-sm">View</a>
 
                     <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#del-{{$user->id}}">Delete</a>

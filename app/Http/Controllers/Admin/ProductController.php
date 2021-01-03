@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\StoreProduct;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
 use App\Traits\Constants;
@@ -27,6 +28,11 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(20);
+        if(count($products)){
+            foreach ($products as $value) {
+                $value->user = User::where('id', $value->user_id)->firstOrFail();
+            }
+        }
         return view('Admin\product\index', compact('products'));
     }
 

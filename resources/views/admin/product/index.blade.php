@@ -26,11 +26,13 @@
                                 <tr>
                                     <th>Image</th>
                                     <th>Product Name</th>
+                                    <th>Vendor Name</th>
                                     <th>Category</th>
                                     <th>Slug</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
                                     <th>Status</th>
+                                    <th>Date Added</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -39,29 +41,35 @@
                                     <tr>
                                         <td><img src="{{ $product->getDefaultImage() }}" alt=""></td>
                                         <td>{{ $product->product_name }}</td>
+                                        <td>{{ $product->user->lastname }} {{ $product->user->firstname}}</td>
                                         <td>{{ $product->category->name }}</td>
                                         <td>{{ $product->slug }}</td>
                                         <td>{{ $product->quantity }}</td>
                                         <td>{{ $product->price }}</td>
                                         <td>{{ $product->status }}</td>
+                                        <td>{{ $product->created_at->format('d-M-Y')}}</td>
                                         <td>
                                             <a href="{{ route('products.edit', $product->id) }}"
                                                 class="btn btn-info btn-sm ">Edit</a>
-                                            <a href="" class="btn btn-primary btn-sm">View</a>
-
+                                            <a href="" class="btn btn-primary btn-sm d-none">View</a>
+                                            <form method="post" action="{{ route('approveProduct',$product->id) }}" class="d-inline">
+                                                @csrf
+                                                <input type="hidden" name="status" value="{{ ($product->status=='Active') ? 'Inactive' : 'Active'}}">
+                                                <button type="submit" class="btn btn-warning btn-sm">{{ ($product->status=='Active') ? 'Deactivate' : 'Activate'}}</button>
+                                            </form> 
                                             <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal"
                                                 data-target="#del-{{ $product->id }}">Delete</a>
                                             <div class="modal fade bd-example-modal-md" id="del-{{ $product->id }}">
                                                 <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header mb-3">
-                                                            <h5 class="modal-title">Delete Product Category </h5>
+                                                            <h5 class="modal-title">Delete Product </h5>
                                                             <button type="button" class="close"
                                                                 data-dismiss="modal"><span>&times;</span></button></h5>
                                                         </div>
                                                         <div class="modal-body">
                                                             <small>
-                                                                Are you sure? Deleting this would Remove this category from
+                                                                Are you sure? Deleting this would Remove this product from
                                                                 the database
                                                             </small>
                                                             <form action="{{ route('products.destroy', $product->id) }}"
