@@ -86,6 +86,16 @@ class ProductController extends ApiController
      *           type="string"
      *      )
      *   ),
+     * 
+     *  @OA\Parameter(
+     *      name="session_key",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     * 
      *  @OA\Parameter(
      *      name="token",
      *      in="query",

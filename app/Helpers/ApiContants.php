@@ -32,6 +32,7 @@ class ApiConstants
     const FB_PROVIDER = 'facebook';
 
     const PAGINATION_SIZE_WEB = 50;
+    const PAGINATION_SIZE_API = 20;
 
 
     const ACTIVE_STATUS = "Active";

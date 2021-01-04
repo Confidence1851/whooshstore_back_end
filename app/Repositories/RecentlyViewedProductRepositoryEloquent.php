@@ -5,7 +5,7 @@ namespace App\Repositories;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\RecentlyViewedProductRepository;
-use App\Entities\RecentlyViewedProduct;
+use App\Models\RecentlyViewedProduct;
 use App\Validators\RecentlyViewedProductValidator;
 
 /**

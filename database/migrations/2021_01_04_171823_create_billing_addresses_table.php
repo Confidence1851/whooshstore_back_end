@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * Class CreateBillingAddressesTable.
@@ -16,8 +17,16 @@ class CreateBillingAddressesTable extends Migration
 	public function up()
 	{
 		Schema::create('billing_addresses', function(Blueprint $table) {
-            $table->increments('id');
-
+			$table->id();
+            $table->unsignedBigInteger('user_id',false);
+            $table->string('name');    
+            $table->string('country_id')->nullable();    
+            $table->string('state_id')->nullable();    
+            $table->string('city_id')->nullable();    
+            $table->string('house_no')->nullable();    
+            $table->string('street')->nullable();    
+            $table->text('full_address');    
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->timestamps();
 		});
 	}

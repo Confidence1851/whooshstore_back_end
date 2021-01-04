@@ -34,6 +34,11 @@ Route::namespace('App\Http\Controllers\Api\v1')->prefix("v1")->group(function ()
         Route::get('detail', 'ProductController@show');
     });
 
+    Route::as('home.')->prefix("home")->group(function () {
+        Route::get('recently-viewed-products', 'HomeController@recentlyViewed');
+        Route::get('product-categories', 'HomeController@productCategories');
+    });
+
     Route::as('auth.')->middleware('auth:api')->group(function () {
         Route::as('cart.')->prefix("cart")->middleware('auth:api')->group(function () {
             Route::post('process', 'CartController@processActions');

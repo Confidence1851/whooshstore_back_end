@@ -5,7 +5,7 @@ namespace App\Repositories;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\BillingAddressRepository;
-use App\Entities\BillingAddress;
+use App\Models\BillingAddress;
 use App\Validators\BillingAddressValidator;
 
 /**
