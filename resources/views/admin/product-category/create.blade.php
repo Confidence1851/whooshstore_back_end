@@ -27,6 +27,15 @@ Create Product Category
                 @enderror
             </div>
             <div class="form-group">
+              <label for="icon">Icon Name</label>
+              <input id="icon" class="form-control @error('icon') is-invalid @enderror first" name="icon" autocomplete="off" placeholder="Icon Name" value="{{ old('icon') }}" type="text">
+               @error('icon')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="form-group">
               <label for="slug">Slug</label>
               <input id="slug" class="form-control @error('slug') is-invalid @enderror second" name="slug" autocomplete="off" placeholder="Slug" value="{{ old('slug') }}" type="text">
                @error('slug')

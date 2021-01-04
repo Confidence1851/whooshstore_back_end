@@ -49,6 +49,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
                 Route::resource('vendors', 'VendorsController')->names([
                     'index' => 'index.vendors'
                 ]);
+                Route::resource('orders', 'OrdersController')->names([
+                    'index' => 'index.orders'
+                ]);
             });
         });
     });

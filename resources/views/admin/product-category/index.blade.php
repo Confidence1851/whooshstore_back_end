@@ -26,6 +26,7 @@ Product Categories
                 <tr>
                   <th>Image</th>
                   <th>Name</th>
+                  <th>Icon Name</th>
                   <th>Slug</th>
                   <th>Actions</th>
                 </tr>
@@ -35,6 +36,7 @@ Product Categories
                 <tr>
                   <td><img src="{{ asset($ProductCategory->image) }}" alt=""></td>
                   <td>{{ $ProductCategory->name }}</td>
+                  <td><i class="link-icon" data-feather="{{ $ProductCategory->icon}}"></i> {{ $ProductCategory->icon }}</td>
                   <td>{{ $ProductCategory->slug }}</td>
                   <td>
                     <a href="{{ route('productcategories.edit',$ProductCategory->id) }}" class="btn btn-outline-info btn-sm ">Edit</a>

@@ -17,6 +17,7 @@ class CreateProductCategoriesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_id')->index()->nullable();
             $table->string('name');
+            $table->string('icon');
             $table->string('slug')->unique();
             $table->string('image')->nullable();
             $table->enum('status', ['Inactive', 'Active']);
