@@ -73,7 +73,7 @@ class HomeController extends Controller
     public function recentlyViewed(Request $request)
     {
         try {
-            $data = $this->recentlyViewedRepo->orderby("id", "desc")->paginate(ApiConstants::PAGINATION_SIZE_API);
+            $data = $this->recentlyViewedRepo->orderby("updated_at", "desc")->paginate(ApiConstants::PAGINATION_SIZE_API);
             return validResponse("Recently viewed products retrieved" ,collect_pagination(new RecentlyViewedProductTransformer, $data));
         } catch (\Exception $e) {
             $message = 'Something went wrong while processing your request.';

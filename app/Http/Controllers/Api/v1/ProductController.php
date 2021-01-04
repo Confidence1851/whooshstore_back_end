@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\ApiConstants;
 use App\Models\Product;
+use App\Repositories\ProductRepository;
+use App\Repositories\RecentlyViewedProductRepository;
 use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,7 +13,15 @@ use Illuminate\Validation\ValidationException;
 
 class ProductController extends ApiController
 {
-   
+
+    private $recentlyViewedRepo;
+    private $productRepo;
+    public function __construct(RecentlyViewedProductRepository $recentlyViewedProductRepo, ProductRepository $productRepository)
+    {
+        $this->recentlyViewedRepo = $recentlyViewedProductRepo;
+        $this->productRepo = $productRepository;
+    }
+
 
     /**
      * @OA\Get(
@@ -61,9 +71,13 @@ class ProductController extends ApiController
     {
 
         try {
-            $products = Product::where("status" , ApiConstants::ACTIVE_STATUS)->whereHas("owner")->inRandomOrder()->paginate(20);
+            $products = $this->productRepo->model()
+                ->where("status", ApiConstants::ACTIVE_STATUS)
+                ->whereHas("owner")
+                ->inRandomOrder()
+                ->paginate(20);
             $productTransformer = new ProductTransformer();
-            return validResponse("Products retrieved", collect_pagination($productTransformer , $products) , $request);
+            return validResponse("Products retrieved", collect_pagination($productTransformer, $products), $request);
         } catch (\Exception $e) {
             $message = 'Something went wrong while processing your request.';
             return problemResponse($message, ApiConstants::SERVER_ERR_CODE, $request, $e);
@@ -71,7 +85,7 @@ class ProductController extends ApiController
     }
 
 
-     /**
+    /**
      * @OA\Get(
      ** path="/v1/products/detail",
      *   tags={"Products"},
@@ -144,14 +158,25 @@ class ProductController extends ApiController
                 throw new ValidationException($validator);
             }
 
-            $product = Product::find($request["product_id"]);
-            if($product->status != ApiConstants::ACTIVE_STATUS){
+            $product = $this->productRepo->find($request["product_id"]);
+            if ($product->status != ApiConstants::ACTIVE_STATUS) {
                 $message = "This product is inactive";
                 return problemResponse($message, ApiConstants::BAD_REQ_ERR_CODE, $request);
             }
-            
+
+
+            if (auth("api")->check()) {
+                $user = auth()->user();
+                $this->recentlyViewedRepo->updateOrCreate(["user_id" => $user->id, "product" => $product->id]);
+            } else {
+                if (!empty($sKey = $request["session_key"])) {
+                    $this->recentlyViewedRepo->updateOrCreate(["session_key" => $sKey, "product" => $product->id]);
+                }
+            }
+
+
             $productTransformer = new ProductTransformer(true);
-            return validResponse("Product detail retrieved", collect_pagination($productTransformer , $product) , $request);
+            return validResponse("Product detail retrieved", collect_pagination($productTransformer, $product), $request);
         } catch (ValidationException $e) {
             $message = "Input validation errors";
             return inputErrorResponse($message, ApiConstants::VALIDATION_ERR_CODE, $request, $e);
@@ -160,5 +185,4 @@ class ProductController extends ApiController
             return problemResponse($message, ApiConstants::SERVER_ERR_CODE, $request, $e);
         }
     }
-
 }
