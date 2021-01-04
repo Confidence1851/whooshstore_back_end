@@ -19,10 +19,11 @@ Product Images
                             <img src="{{ $image->getImage(false)}}" class="w-100 img-fluid rounded" data-toggle="modal" data-target="#image_modal_{{ $image->id }}" alt="">
                              @include('admin.partials.update-image-modal')
                             <a href="" class="btn btn-outline-danger btn-sm mt-3" data-toggle="modal"
-                            data-target="#del-{{ $product->id }}">Delete</a> 
+                            data-target="#del_image-{{ $image->id }}">Delete</a> 
                         </div>
                     </div>
                 </div>
+                @include('admin.partials.delete-image-modal'  , ["image" => $image])
             @endforeach
         </div>
         <div class="col-md-9">
@@ -44,6 +45,3 @@ Product Images
         </div>
     </div>
 @endsection
-@push('delete-modal')
-@include('admin.partials.delete-image-modal')
-@endpush
