@@ -32,6 +32,7 @@ Approve Products
                   <th>Quantity</th>
                   <th>Price</th>
                   <th>Status</th>
+                  <th>Date Added</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -46,6 +47,7 @@ Approve Products
                   <td>{{ $Product->quantity }}</td>
                   <td>{{ $Product->price }}</td>
                   <td>{{ $Product->status }}</td>
+                  <td>{{ $Product->created_at->format('d-M-Y')}}</td>
                   <td>
                     <form method="post" action="{{ route('approveProduct',$Product->id) }}" class="d-inline">
                         @csrf

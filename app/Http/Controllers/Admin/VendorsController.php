@@ -117,7 +117,7 @@ class VendorsController extends Controller
             $product->update();
             if ($request->status=="Active") {
                 toastr()->success('Product has been approved successfully!');
-                return redirect()->route('vendors.approve');
+                return redirect()->back();
             } else {
                 toastr()->success('Product has been disabled!');
                 return redirect()->back();

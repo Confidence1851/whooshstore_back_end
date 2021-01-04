@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 @section('title')
-    Products
+    Orders
 @endsection
 @section('content')
     {{-- css --}}
@@ -11,7 +11,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/admin/dashboard') }}">Admin Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Product</li>
+            <li class="breadcrumb-item active" aria-current="page">Orders</li>
         </ol>
     </nav>
 
@@ -19,63 +19,51 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Product</h6>
+                    <h6 class="card-title">Order</h6>
                     <div class="table-responsive">
                         <table id="dataTableExample" class="table">
                             <thead>
                                 <tr>
-                                    <th>Image</th>
-                                    <th>Product Name</th>
-                                    <th>Vendor Name</th>
-                                    <th>Category</th>
-                                    <th>Slug</th>
+                                    <th>ID</th>
+                                    <th>User Name</th>
+                                    <th>Ref Number </th>
                                     <th>Quantity</th>
-                                    <th>Price</th>
                                     <th>Status</th>
-                                    <th>Date Added</th>
+                                    <th>Payment Method </th>
+                                    <th>Total Amount</th>
+                                    <th>Order Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $product)
+                                @foreach ($Orders as $order)
                                     <tr>
-                                        <td><img src="{{ $product->getDefaultImage() }}" alt=""></td>
-                                        <td>{{ $product->product_name }}</td>
-                                        <td>{{ $product->user->lastname }} {{ $product->user->firstname}}</td>
-                                        <td>{{ $product->category->name }}</td>
-                                        <td>{{ $product->slug }}</td>
-                                        <td>{{ $product->quantity }}</td>
-                                        <td>{{ $product->price }}</td>
-                                        <td>{{ $product->status }}</td>
-                                        <td>{{ $product->created_at->format('d-M-Y')}}</td>
+                                        <td>{{ $order->id }}</td>
+                                        <td>{{ $order->user->lastname }} {{ $order->user->firstname}}</td>
+                                        <td>{{ $order->reference }}</td>
+                                        <td>{{ $order->quantity }}</td>
+                                        <td>{{ $order->status }}</td>
+                                        <td>{{ $order->payment_type }}</td>
+                                        <td>{{ $order->amount }}</td>
+                                        <td>{{ $order->created_at->format('d-M-Y')}}</td>
                                         <td>
-                                            <a href="{{ route('products.edit', $product->id) }}"
-                                                class="btn btn-info btn-sm ">Edit</a>
-                                            <a href="" class="btn btn-primary btn-sm d-none">View</a>
-                                            <form method="post" action="{{ route('approveProduct',$product->id) }}" class="d-inline">
-                                                @csrf
-                                                <input type="hidden" name="status" value="{{ ($product->status=='Active') ? 'Inactive' : 'Active'}}">
-                                                <button type="submit" class="btn btn-warning btn-sm">{{ ($product->status=='Active') ? 'Deactivate' : 'Activate'}}</button>
-                                            </form> 
-                                            <a href="{{ route('products.images', $product->id) }}"
-                                                class="btn btn-success btn-sm">update image</a>
-
+                                            <a href="{{ route('orders.show',$order->id) }}" class="btn btn-primary btn-sm">View</a>
                                             <a href="" class="btn btn-outline-danger btn-sm" data-toggle="modal"
-                                                data-target="#del-{{ $product->id }}">Delete</a>
-                                            <div class="modal fade bd-example-modal-md" id="del-{{ $product->id }}">
+                                                data-target="#del-{{ $order->id }}">Delete</a>
+                                            <div class="modal fade bd-example-modal-md" id="del-{{ $order->id }}">
                                                 <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header mb-3">
-                                                            <h5 class="modal-title">Delete Product </h5>
+                                                            <h5 class="modal-title">Delete Order </h5>
                                                             <button type="button" class="close"
                                                                 data-dismiss="modal"><span>&times;</span></button></h5>
                                                         </div>
                                                         <div class="modal-body">
                                                             <small>
-                                                                Are you sure? Deleting this would Remove this product from
-                                                                the database
+                                                                Are you sure? Deleting this would remove this order from
+                                                                the database.
                                                             </small>
-                                                            <form action="{{ route('products.destroy', $product->id) }}"
+                                                            <form action="{{ route('orders.destroy', $order->id) }}"
                                                                 method="post">
                                                                 @csrf @method('delete')
                                                                 <div class="modal-footer">

@@ -21,9 +21,11 @@ class ProductFactory extends Factory
      *
      * @return array
      */
+
     public function definition()
     {
         $name = $this->faker->name;
+        $sku = $this->faker->numerify('####'.$name.'##');
         $slug = Str::slug($name);
         $type = ['new','featured'];
         $status = ['active','inactive'];
@@ -31,7 +33,8 @@ class ProductFactory extends Factory
             'product_name' => $name,
             'slug' => $slug,
             'category_id' => Productcategory::factory(),
-            'sku' => '1',
+            'user_id' => 2,
+            'sku' => $sku,
             'quantity' => '10',
             'price' => 1499,
             'video' => 'file',

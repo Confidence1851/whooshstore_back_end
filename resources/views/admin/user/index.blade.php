@@ -29,6 +29,7 @@ Users
                   <th>Role</th>
                   <th>Phone</th>
                   <th>Address</th>
+                  <th>Date Added</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -64,6 +65,7 @@ Users
                       Address: {{$user->address}}
                     @endif
                   </td>
+                  <td>{{ $user->created_at->format('d-M-Y')}}</td>
                   <td>
                     <a href="{{ route('users.edit',$user->id) }}" class="btn btn-outline-info btn-sm ">Edit</a>
                     <a href="{{ route('users.show',$user->id) }}" class="btn btn-outline-primary btn-sm">View</a>
