@@ -52,6 +52,7 @@ class ProductCategoryController extends Controller
             $productCategoryImage->move('uploads/product-category', $productCategoryImageNewName);
 
             $productCategory->name = $request->name;
+            $productCategory->icon = $request->icon;
             $productCategory->slug = Str::slug($request->name);
             $productCategory->image = 'uploads/product-category/' . $productCategoryImageNewName;
 
@@ -112,6 +113,7 @@ class ProductCategoryController extends Controller
             }
 
             $productCategory->name = $request->name;
+            $productCategory->icon = $request->icon;
             $productCategory->slug = $request->slug;
             $productCategory->image = 'uploads/product-category/' . $productCategoryImageNewName;
 
