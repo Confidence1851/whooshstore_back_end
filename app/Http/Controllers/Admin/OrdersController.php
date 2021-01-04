@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Order;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 
 class OrdersController extends Controller
 {
@@ -16,6 +19,11 @@ class OrdersController extends Controller
     public function index()
     {
         $Orders = Order::paginate(10);
+        if(count($Orders)){
+            foreach ($Orders as $value) {
+                $value->user = User::where('id', $value->user_id)->firstOrFail();
+            }
+        }
         return view('Admin\order\index', compact('Orders'));
     }
 
@@ -69,8 +77,15 @@ class OrdersController extends Controller
      */
     public function show($id)   
     {
+        $OrderItem = OrderItem::where('order_id', $id)->get();
+        if (count($OrderItem)) {
+            foreach ($OrderItem as $value) {
+                $value->product = Product::where('id', $value->product_id)->firstOrFail();
+            }
+        }
         $order = Order::findorfail($id);
-        return view('Admin\order\show',compact('order'));
+        $order->user = User::where('id', $order->user_id)->firstOrFail();
+        return view('Admin\order\show',compact('order','OrderItem'));
     }
 
     /**

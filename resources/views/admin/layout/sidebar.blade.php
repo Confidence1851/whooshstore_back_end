@@ -55,10 +55,21 @@
       </li>
       <li class="nav-item nav-category">Orders</li>
       <li class="nav-item">
-        <a href="{{ url('') }}" class="nav-link">
+        <a data-toggle="collapse" href="#orders" role="button"  aria-controls="user" class="nav-link">
           <i class="link-icon" data-feather="briefcase"></i>
           <span class="link-title">Orders</span>
+          <i class="link-arrow" data-feather="chevron-down"></i>
         </a>
+         <div class="collapse" id="orders">
+          <ul class="nav sub-menu">
+            <li class="nav-item">
+              <a href="{{ url('/admin/orders') }}" class="nav-link">Index</a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link">Approved Orders</a>
+            </li>
+          </ul>
+        </div>
       </li>
       <li class="nav-item nav-category">Users</li>
       <li class="nav-item">
