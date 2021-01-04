@@ -15,6 +15,7 @@ Product Category
       <div class="card-body">
         <h4 class="card-title">Product Category</h4>
         <p>Name: {{$productCategory->name}}</p>
+        <p>Icon Name: {{$productCategory->icon}}</p>
         <p>Slug: {{$productCategory->slug}}</p>
         <div>
             Image:

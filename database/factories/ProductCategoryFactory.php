@@ -27,6 +27,7 @@ class ProductCategoryFactory extends Factory
 
         return [
             'name' => $name,
+            'icon' => 'star',
             'slug' => $slug,
             'image' => $this->faker->image('public/uploads/product-category',400,300, null, false),
         ];

@@ -22,6 +22,15 @@ Edit Product Category
                 @enderror
             </div>
             <div class="form-group">
+              <label for="icon">Icon Name</label>
+              <input id="icon" class="form-control @error('icon') is-invalid @enderror first" name="icon" autocomplete="off" placeholder="Icon Name" value="{{ $productCategory->icon }}" type="text">
+               @error('icon')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="form-group">
               <label for="slug">Slug</label>
               <input id="slug" class="form-control @error('slug') is-invalid @enderror" name="slug" autocomplete="off" placeholder="Slug" value="{{ $productCategory->slug }}" type="text">
                @error('slug')
