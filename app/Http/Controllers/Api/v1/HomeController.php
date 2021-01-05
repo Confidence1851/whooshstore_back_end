@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Helpers\ApiConstants;
 use App\Http\Controllers\Controller;
 use App\Repositories\RecentlyViewedProductRepository;
+use App\Transformers\ProductCategoryTransformer;
 use App\Transformers\RecentlyViewedProductTransformer;
 use Illuminate\Http\Request;
 
@@ -73,7 +74,7 @@ class HomeController extends Controller
     public function recentlyViewed(Request $request)
     {
         try {
-            $data = $this->recentlyViewedRepo->orderby("updated_at", "desc")->paginate(ApiConstants::PAGINATION_SIZE_API);
+            $data = $this->recentlyViewedRepo->whereHas("product" , null)->orderby("updated_at", "desc")->paginate(ApiConstants::PAGINATION_SIZE_API);
             return validResponse("Recently viewed products retrieved" ,collect_pagination(new RecentlyViewedProductTransformer, $data));
         } catch (\Exception $e) {
             $message = 'Something went wrong while processing your request.';
@@ -123,8 +124,8 @@ class HomeController extends Controller
     public function productCategories(Request $request)
     {
         try {
-            $data = $this->recentlyViewedRepo->orderby("id", "desc")->paginate(ApiConstants::PAGINATION_SIZE_API);
-            return validResponse("Product categories retrieved" ,collect_pagination(new RecentlyViewedProductTransformer, $data));
+            $data = $this->recentlyViewedRepo->whereHas("products" , null)->orderby("id", "desc")->paginate(ApiConstants::PAGINATION_SIZE_API);
+            return validResponse("Product categories retrieved" ,collect_pagination(new ProductCategoryTransformer(true), $data));
         } catch (\Exception $e) {
             $message = 'Something went wrong while processing your request.';
             return problemResponse($message, ApiConstants::SERVER_ERR_CODE, $request, $e);

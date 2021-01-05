@@ -12,6 +12,10 @@ class ProductImage extends Model
 
     public $guarded = [];
 
+    public function product(){
+        return $this->belongsTo(Product::class , "product_id");
+    }
+
     public function getImage($getPath = true){ //if true , return only path else return image url
         $relativePath = "$this->productImagePath/$this->image";
         if($getPath){

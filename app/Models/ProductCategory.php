@@ -10,7 +10,10 @@ class ProductCategory extends Model
     use HasFactory;
 
     public function products(){
+        return $this->hasMany(Product::class , "category_id");
+    }
 
-        return $this->hasMany('Product');
+    public function sub_categories(){
+        return $this->hasMany(ProductCategory::class , "parent_id" , "id");
     }
 }

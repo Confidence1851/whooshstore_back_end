@@ -24,6 +24,11 @@ class Product extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id');
+    }
+
     public function getDefaultImage(){
         $image = ProductImage::where("product_id" , $this->id)->where("status", "Active")->first();
         if(empty($image)){
