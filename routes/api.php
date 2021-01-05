@@ -45,7 +45,7 @@ Route::namespace('App\Http\Controllers\Api\v1')->prefix("v1")->group(function ()
             Route::post('process', 'CartController@processActions');
             Route::post('update-item-quantity', 'CartController@updateQuantity');
             Route::get('items', 'CartController@cartItems');
-            Route::post('checkout', 'CartController@processCheckout');
+            Route::post('process-checkout', 'CartController@processCheckout');
         });
 
         Route::as('wishlist.')->prefix("wishlist")->group(function () {
