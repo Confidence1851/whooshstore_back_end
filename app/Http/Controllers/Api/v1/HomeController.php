@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\ApiConstants;
 use App\Http\Controllers\Controller;
+use App\Repositories\ProductCategoryRepository;
 use App\Repositories\RecentlyViewedProductRepository;
 use App\Transformers\ProductCategoryTransformer;
 use App\Transformers\RecentlyViewedProductTransformer;
@@ -12,9 +13,11 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     private $recentlyViewedRepo;
-    public function __construct(RecentlyViewedProductRepository $recentlyViewedProductRepo)
+    private $productCategoryRepo;
+    public function __construct(RecentlyViewedProductRepository $recentlyViewedProductRepo , ProductCategoryRepository $productCategoryRepository)
     {
         $this->recentlyViewedRepo = $recentlyViewedProductRepo;
+        $this->productCategoryRepo = $productCategoryRepository;
     }
 
 
@@ -124,7 +127,7 @@ class HomeController extends Controller
     public function productCategories(Request $request)
     {
         try {
-            $data = $this->recentlyViewedRepo->whereHas("products" , null)->orderby("id", "desc")->paginate(ApiConstants::PAGINATION_SIZE_API);
+            $data = $this->productCategoryRepo->whereHas("products" , null)->orderby("id", "desc")->paginate(ApiConstants::PAGINATION_SIZE_API);
             return validResponse("Product categories retrieved" ,collect_pagination(new ProductCategoryTransformer(true), $data));
         } catch (\Exception $e) {
             $message = 'Something went wrong while processing your request.';

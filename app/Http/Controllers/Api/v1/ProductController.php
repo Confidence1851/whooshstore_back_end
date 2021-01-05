@@ -27,9 +27,48 @@ class ProductController extends ApiController
      * @OA\Get(
      ** path="/v1/products/list",
      *   tags={"Products"},
-     *   summary="List all active products",
+     *   summary="List all active products that matches the query",
      *   operationId="products_list",
+     * 
+     * @OA\Parameter(
+     *      name="sort_order",
+     *      description="Sort in asc , desc or random order",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     * 
+     * @OA\Parameter(
+     *      name="category_id",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     * 
+     * @OA\Parameter(
+     *      name="search_keywords",
+     *      in="query",
+     *      description="Search for product by name",
+     *      required=false,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
      *
+     *   @OA\Parameter(
+     *      name="pagination_limit",
+     *      description="Limit of products to return. Default is 20",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     * 
      *  @OA\Parameter(
      *      name="token",
      *      in="query",
@@ -69,13 +108,27 @@ class ProductController extends ApiController
      */
     public function index(Request $request)
     {
-
+        $limit = $request["pagination_limit"] ?? ApiConstants::PAGINATION_SIZE_API;
         try {
-            $products = $this->productRepo->model()
-                ->where("status", ApiConstants::ACTIVE_STATUS)
-                ->whereHas("owner")
-                ->inRandomOrder()
-                ->paginate(20);
+            $builder = $this->productRepo->where("status", ApiConstants::ACTIVE_STATUS)
+                ->whereHas("owner");
+
+            if (!empty($key = strtolower($request["sort_order"]))) {
+                if (in_array($key, ["asc", "desc"])) {
+                    $builder = $builder->orderBy("updated_at", $key);
+                } else {
+                    $builder = $builder->inRandomOrder();
+                }
+            }
+            if (!empty($key = $request["search_keywords"])) {
+                $words = explode(' ', $key);
+                $builder = $builder->whereIn("name", $words)->orWhere("name", "like", "%$key%");
+            }
+            if (!empty($key = $request["category_id"])) {
+                $builder = $builder->where("category_id", $key);
+            }
+
+            $products = $builder->paginate($limit);
             $productTransformer = new ProductTransformer();
             return validResponse("Products retrieved", collect_pagination($productTransformer, $products), $request);
         } catch (\Exception $e) {
