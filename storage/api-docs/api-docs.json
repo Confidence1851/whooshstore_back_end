@@ -314,14 +314,192 @@
                 }
             }
         },
+        "/v1/home/recently-viewed-products": {
+            "get": {
+                "tags": [
+                    "Home"
+                ],
+                "summary": "List recently viewed products",
+                "operationId": "recently-viewed-products",
+                "parameters": [
+                    {
+                        "name": "session_key",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/v1/home/product-categories": {
+            "get": {
+                "tags": [
+                    "Home"
+                ],
+                "summary": "List product categories",
+                "operationId": "product-categories",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/v1/home/slider-and-images": {
+            "get": {
+                "tags": [
+                    "Home"
+                ],
+                "summary": "Show sliders and images",
+                "operationId": "slider-and-images",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/v1/home/trending-searches": {
+            "get": {
+                "tags": [
+                    "Home"
+                ],
+                "summary": "Show trending searches for products and categories",
+                "operationId": "trending",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "/v1/products/list": {
             "get": {
                 "tags": [
                     "Products"
                 ],
-                "summary": "List all active products",
+                "summary": "List all active products that matches the query",
                 "operationId": "products_list",
                 "parameters": [
+                    {
+                        "name": "display_type",
+                        "in": "query",
+                        "description": "Options: today_deals , new_arrivals , best_seller . Default is null",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sort_order",
+                        "in": "query",
+                        "description": "Sort in asc , desc or random order",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search_keywords",
+                        "in": "query",
+                        "description": "Search for product by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagination_limit",
+                        "in": "query",
+                        "description": "Limit of products to return. Default is 20",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "token",
                         "in": "query",
@@ -365,6 +543,14 @@
                         "name": "product_id",
                         "in": "query",
                         "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "session_key",
+                        "in": "query",
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }

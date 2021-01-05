@@ -24,6 +24,7 @@ class ProductTransformer
             'price' => $product->price,
             'discount' => $product->percent_off,
             'payable_price' => ($product->price  - (($product->price * $product->percent_off) / 100)),
+            'rating' => $product->star_rating,
             'display_image' => $product->getDefaultImage()
         ];
 
@@ -49,7 +50,7 @@ class ProductTransformer
 
     public function collect($collection)
     {
-        $transformer = new ProductTransformer($this->fullDetails);
+        $transformer = new ProductTransformer($this->fullDetails );
         return collect($collection)->map(function ($model) use ($transformer) {
             return $transformer->transform($model);
         });

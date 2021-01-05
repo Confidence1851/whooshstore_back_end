@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\ApiConstants;
+use App\Helpers\QueryExtractor;
+use App\Helpers\QueryExtractors;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
+use App\Repositories\ProductSearchRepository;
 use App\Repositories\RecentlyViewedProductRepository;
 use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
@@ -16,11 +19,17 @@ class ProductController extends ApiController
 
     private $recentlyViewedRepo;
     private $productRepo;
-    public function __construct(RecentlyViewedProductRepository $recentlyViewedProductRepo, ProductRepository $productRepository)
+    private $productSearchRepo;
+    public function __construct(RecentlyViewedProductRepository $recentlyViewedProductRepo, 
+                                ProductRepository $productRepository,
+                                ProductSearchRepository $productSearchRepository
+                                )
     {
         $this->recentlyViewedRepo = $recentlyViewedProductRepo;
         $this->productRepo = $productRepository;
+        $this->productSearchRepo = $productSearchRepository;
     }
+   
 
 
     /**
@@ -29,6 +38,16 @@ class ProductController extends ApiController
      *   tags={"Products"},
      *   summary="List all active products that matches the query",
      *   operationId="products_list",
+     * 
+     * @OA\Parameter(
+     *      name="display_type",
+     *      description="Options: today_deals , new_arrivals , best_seller . Default is null",
+     *      in="query",
+     *      required=false,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
      * 
      * @OA\Parameter(
      *      name="sort_order",
@@ -110,25 +129,28 @@ class ProductController extends ApiController
     {
         $limit = $request["pagination_limit"] ?? ApiConstants::PAGINATION_SIZE_API;
         try {
-            $builder = $this->productRepo->where("status", ApiConstants::ACTIVE_STATUS)
-                ->whereHas("owner");
 
-            if (!empty($key = strtolower($request["sort_order"]))) {
-                if (in_array($key, ["asc", "desc"])) {
-                    $builder = $builder->orderBy("updated_at", $key);
-                } else {
-                    $builder = $builder->inRandomOrder();
-                }
-            }
-            if (!empty($key = $request["search_keywords"])) {
-                $words = explode(' ', $key);
-                $builder = $builder->whereIn("name", $words)->orWhere("name", "like", "%$key%");
-            }
-            if (!empty($key = $request["category_id"])) {
-                $builder = $builder->where("category_id", $key);
-            }
-
+            $builder = QueryExtractor::productQuery($request);
+            
             $products = $builder->paginate($limit);
+
+            if(auth("api")->check()){
+                $user_id = auth()->id();
+            }
+            else{
+                $user_id = null;
+            }
+
+            if(!empty($key = $request["search_keywords"])){
+                $query = $request->all();
+                unset($query["token"]);
+                $this->productSearchRepo->create([
+                    "search_keywords" => $key,
+                    "user_id" => $user_id,
+                    "results_count" => $builder->count(),
+                    "query" => serialize($query),
+                ]);
+            }
             $productTransformer = new ProductTransformer();
             return validResponse("Products retrieved", collect_pagination($productTransformer, $products), $request);
         } catch (\Exception $e) {

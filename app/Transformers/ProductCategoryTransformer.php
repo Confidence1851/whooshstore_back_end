@@ -39,6 +39,11 @@ class ProductCategoryTransformer extends TransformerAbstract
         ];
     }
 
+    public function transformWIthId($id){
+        $category = ProductCategory::find($id) ?? new ProductCategory;
+        return $this->transform($category);
+    }
+
 
     public function collect($collection)
     {
@@ -47,5 +52,4 @@ class ProductCategoryTransformer extends TransformerAbstract
             return $transformer->transform($model);
         });
     }
-
 }
