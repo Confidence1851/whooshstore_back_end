@@ -267,7 +267,7 @@ class CartController extends ApiController
      * @OA\Post(
      ** path="/v1/cart/checkout",
      *   tags={"Cart"},
-     *   summary="Processcart checkout",
+     *   summary="Process cart checkout",
      *   operationId="cart_checkout",
      * 
      *  @OA\Parameter(

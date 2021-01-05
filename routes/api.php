@@ -41,16 +41,22 @@ Route::namespace('App\Http\Controllers\Api\v1')->prefix("v1")->group(function ()
     });
 
     Route::as('auth.')->middleware('auth:api')->group(function () {
-        Route::as('cart.')->prefix("cart")->middleware('auth:api')->group(function () {
+        Route::as('cart.')->prefix("cart")->group(function () {
             Route::post('process', 'CartController@processActions');
             Route::post('update-item-quantity', 'CartController@updateQuantity');
             Route::get('items', 'CartController@cartItems');
             Route::post('checkout', 'CartController@processCheckout');
         });
 
-        Route::as('wishlist.')->prefix("wishlist")->middleware('auth:api')->group(function () {
+        Route::as('wishlist.')->prefix("wishlist")->group(function () {
             Route::post('process', 'WishlistController@processActions');
             Route::get('items', 'WishlistController@wishlistItems');
+        });
+
+        Route::as('orders.')->prefix("orders")->group(function () {
+            Route::get('history', 'OrderController@history');
+            Route::post('billing-address', 'OrderController@saveBillingAddress');
+            Route::get('invoice', 'OrderController@invoice');
         });
     });
 });

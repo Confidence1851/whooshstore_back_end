@@ -129,7 +129,7 @@ class OrderController extends Controller
      *  @OA\Parameter(
      *      name="action",
      *      in="query",
-     *      description="create , update or delete. Provide an id when updating or deleting an address"
+     *      description="create , update or delete. Provide an id when updating or deleting an address",
      *      required=false,
      *      @OA\Schema(
      *           type="string"
@@ -139,7 +139,7 @@ class OrderController extends Controller
      *  @OA\Parameter(
      *      name="address_id",
      *      in="query",
-     *      description="bail|Required|string for update or delete actions"
+     *      description="bail|Required|string for update or delete actions",
      *      required=false,
      *      @OA\Schema(
      *          type="string"
@@ -149,7 +149,7 @@ class OrderController extends Controller
      *  @OA\Parameter(
      *      name="name",
      *      in="query",
-     *      description="Name of address"
+     *      description="Name of address",
      *      required=true,
      *      @OA\Schema(
      *          type="string"
