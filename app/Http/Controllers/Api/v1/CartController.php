@@ -16,6 +16,7 @@ use App\Transformers\CartTransformer;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class CartController extends ApiController
@@ -261,113 +262,116 @@ class CartController extends ApiController
     }
 
 
-    public function checkoutm(Request $request)
-    {
-        // dd($request->all());
-        $data = $request->validate([
-            'file' => 'required|file|mimetypes:image/jpeg,image/png,image/jpg,application/pdf',
-            'comment' => 'nullable|string',
-            'phone_no' => 'nullable|string',
-            'reference' => 'required|string',
-        ]);
-        if (!empty($file = $request->file('file'))) {
-            $data['file'] = putFileInPrivateStorage($file, $this->orderReceiptsFilePath);
-        }
-
-        // DB::beginTransaction();
-        $cart = getUserCart();
-        $data['user_id'] = auth('web')->id();
-        $data['amount'] = $cart->total;
-        $data['discount'] = $cart->discount;
-        $data['reference'] = $cart->reference;
-        $data['payment_type'] = 'Bank Transfer';
-
-        $order = Order::create($data);
-
-        foreach ($cart->items as $item) {
-            $amount = 0;
-            $discount = 0;
-            if (!empty($item->product_id)) {
-                if (!empty($course = $item->course)) {
-                    $amount = $course->payableAmount();
-                    $discount = $course->discount;
-                }
-            } else {
-                if (!empty($plan = $item->plan)) {
-                    $amount = $plan->price;
-                }
-            }
-
-            OrderItem::create([
-                'order_id' => $order->id,
-                'user_id' => auth('web')->id(),
-                'product_id' => $item->product_id,
-                'plan_id' => $item->plan_id,
-                'amount' => $amount,
-                'discount' => $discount,
-            ]);
-
-            if (!empty($item->product_id)) {
-                if (!empty($course = $item->course)) {
-                    $course->orders_count += 1;
-                    $course->save();
-                }
-            }
-
-            $item->delete();
-        }
-
-        refreshCart($cart->id, true);
-        $return = [
-            'msg' => 'Your order has been submitted and is awaiting approval!',
-            'reference' => $order->reference,
-        ];
-        return redirect()->route('cart.checkout.success', encrypt($return));
-    }
-
-    public function checkoutSuccess($data)
-    {
-        $data = decrypt($data);
-        $message = $data['msg'];
-        $reference = $data['reference'];
-        return view('web.checkout_complete', compact('message', 'reference'));
-    }
-
-    public function receipt()
-    {
-        $cart = getUserCart();
-        $items = getUserCart()->cartItems;
-        $user = auth('web')->user();
-        return view('web.receipt', compact('cart', 'items', 'user'));
-    }
-
-    public function charge(Request $request)
+    
+    /**
+     * @OA\Post(
+     ** path="/v1/cart/checkout",
+     *   tags={"Cart"},
+     *   summary="Processcart checkout",
+     *   operationId="cart_checkout",
+     * 
+     *  @OA\Parameter(
+     *      name="method",
+     *      in="query",
+     *      description="Options: stripe",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="address_id",
+     *      in="query",
+     *      description="User billing address id",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="stripeToken",
+     *      in="query",
+     *      description="Required if method is stripe else leave empty",
+     *      required=false,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     * @OA\Parameter(
+     *      name="token",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *          type="string"
+     *      )
+     *   ),
+     * 
+     *   @OA\Response(
+     *      response=200,
+     *       description="Success",
+     *      @OA\MediaType(
+     *           mediaType="application/json",
+     *      )
+     *   ),
+     *   @OA\Response(
+     *      response=401,
+     *       description="Unauthenticated"
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad Request"
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Not found"
+     *   ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *)
+     **/
+    /**
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function processCheckout(Request $request)
     {
         DB::beginTransaction();
-        $cart = getUserCart();
-        $request['amount'] = $cart->total;
-        $process = $this->processStripe($request);
-        if ($process['success']) {
-            try {
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'method' => 'bail|required|string',
+                'address_id' => 'bail|required|string|exists:billing_addresses,id',
+                'stripeToken' => Rule::requiredIf(strtolower($request["method"]) == "stripe"),
+            ]);
+            if ($validator->fails()) {
+                throw new ValidationException($validator);
+            }
+
+            $cart = getUserCart("api");
+            $request['amount'] = $cart->total;
+            $process = $this->processStripe($request);
+            if ($process['success']) {
 
                 $order = Order::create([
                     'user_id' => auth()->user()->id,
-                    'order_ref_no' => time(),
-                    'status' => $this->activeStatus,
+                    'reference' => time(),
+                    'status' => ApiConstants::ACTIVE_STATUS,
                     'payment_id' => $process['payment']->id,
-                    'delivery_address_id' => $request->address,
+                    'billing_address_id' => $request->address_id,
                 ]);
 
                 foreach ($cart->cartItems as $item) {
                     OrderItem::create([
                         'order_id' => $order->id,
-                        'dish_id' => $item->dish_id,
+                        'product_id' => $item->product_id,
                         'price' => $item->price,
                         'discount' => $item->discount,
                         'quantity' => $item->quantity,
                         'extra' => $item->extra,
                         'user_comment' => $item->comment,
-                        'status' => $this->pendingStatus,
+                        'status' => ApiConstants::PENDING_STATUS,
                     ]);
                     $item->delete();
 
@@ -379,14 +383,19 @@ class CartController extends ApiController
 
                 refreshCart($cart->id);
                 DB::commit();
-                return redirect()->route('receipt');
-            } catch (Exception $e) {
-                DB::rollback();
-                dd($e->getMessage());
+                return validResponse("Payment successful");
+            } else {
+                // payment failed: display message to customer
+                return problemResponse($process['msg'], ApiConstants::BAD_REQ_ERR_CODE, $request,);
             }
-        } else {
-            // payment failed: display message to customer
-            return $process['msg'];
+        } catch (ValidationException $e) {
+            DB::rollback();
+            $message = "Input validation errors";
+            return inputErrorResponse($message, ApiConstants::VALIDATION_ERR_CODE, $request, $e);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $message = 'Something went wrong while processing your request.';
+            return problemResponse($message, ApiConstants::SERVER_ERR_CODE, $request, $e);
         }
     }
 }

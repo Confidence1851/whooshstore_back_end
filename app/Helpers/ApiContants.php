@@ -37,6 +37,7 @@ class ApiConstants
 
     const ACTIVE_STATUS = "Active";
     const INACTIVE_STATUS = "Inactive";
+    const PENDING_STATUS = "Pending";
 
 
 

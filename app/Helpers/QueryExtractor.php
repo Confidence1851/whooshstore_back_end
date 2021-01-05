@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -40,6 +41,28 @@ class QueryExtractor
             }
         }
 
+        return $builder;
+    }
+
+    public static function orderHistoryQuery(Request $request)
+    {
+        $builder = Order::where("user_id" , auth("api")->id())
+                    ->orderBy("id", "desc");
+
+        
+        if (!empty($key = $request["search_keywords"])) {
+            $words = explode(' ', $key);
+            $builder = $builder->whereIn("product_name", $words)->orWhere("product_name", "like", "%$key%");
+        }
+
+        if (!empty($key = $request["fromDate"])) {
+            $builder = $builder->where("created_at", '>=' , carbon()->parse($key)->startOfDay());
+        }
+
+        if (!empty($key = $request["toDate"])) {
+            $builder = $builder->where("created_at", '<=' , carbon()->parse($key)->endOfDay());
+        }
+        
         return $builder;
     }
 }

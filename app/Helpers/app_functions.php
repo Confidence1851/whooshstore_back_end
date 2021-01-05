@@ -278,3 +278,8 @@ function getFileType(String $type)
     function format_int($value , $decimal = 0){
         return (int) number_format($value , $decimal , ''  );
     }
+
+
+    function carbon(){
+        return new Carbon();
+    }
