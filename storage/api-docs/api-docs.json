@@ -314,13 +314,13 @@
                 }
             }
         },
-        "/v1/cart/checkout": {
+        "/v1/cart/process-checkout": {
             "post": {
                 "tags": [
                     "Cart"
                 ],
                 "summary": "Process cart checkout",
-                "operationId": "cart_checkout",
+                "operationId": "process_checkout",
                 "parameters": [
                     {
                         "name": "method",

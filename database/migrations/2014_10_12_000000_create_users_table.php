@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             //role 0->admin 1-> vendor 2->user
-            $table->tinyInteger('role')->nullable()->default(2);
+            $table->tinyInteger('role')->default(2);
             $table->string('password');
             $table->string('city')->nullable();
             $table->string('state')->nullable();
@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->text('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('phone2')->nullable();
+            $table->tinyInteger('status')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
