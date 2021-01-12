@@ -46,7 +46,7 @@ class RegisterController extends ApiController
      *  @OA\Parameter(
      *      name="role",
      *      in="query",
-     *      description="Options: customer , vendor"
+     *      description="Options: customer , vendor",
      *      required=true,
      *      @OA\Schema(
      *           type="string"

@@ -83,6 +83,15 @@
                         }
                     },
                     {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Options: customer , vendor",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "email",
                         "in": "query",
                         "required": true,
