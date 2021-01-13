@@ -28,11 +28,6 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(20);
-        if(count($products)){
-            foreach ($products as $value) {
-                $value->user = User::where('id', $value->user_id)->firstOrFail();
-            }
-        }
         return view('Admin\product\index', compact('products'));
     }
 
@@ -198,22 +193,20 @@ class ProductController extends Controller
 
     public function deleteImage(Request $request, $productImageId)
     {
-            $productImage = ProductImage::find($productImageId);
-           
-        dd($productImage);
-        // try {
-        //     $productImage = ProductImage::findOrFail($product);
-        //     $issetImage = !empty($productImage);
-        //     if ($issetImage) {
-        //         deleteFileFromPrivateStorage($productImage->getImage());
-        //     }
 
-        //     $productImage->delete();
+        try {
+            $productImage = ProductImage::findorfail($productImageId);
+            $issetImage = !empty($productImage);
+            if ($issetImage) {
+                deleteFileFromPrivateStorage($productImage->getImage());
+            }
 
-        //     toastr()->success('Data has been Deleted successfully!');
-        //     return redirect()->back();
-        // } catch (Exception $e) {
-        //     return back()->with("error", $e->getMessage());
-        // }
+            $productImage->delete();
+
+            toastr()->success('Data has been deleted successfully!');
+            return redirect()->back();
+        } catch (Exception $e) {
+            return back()->with("error", $e->getMessage());
+        }
     }
 }

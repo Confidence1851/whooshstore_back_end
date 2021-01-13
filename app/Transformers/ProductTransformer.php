@@ -14,30 +14,45 @@ class ProductTransformer
     }
     public function transform(Product $product)
     {
-        return [
+        $categoryTrans = new ProductCategoryTransformer;
+        $imagesTrans = new ProductImageTransformer;
+        $shortDetails = [
             'id' => $product->id,
-            'category_id' => $product->category_id,
-            'discount' => $product->discount,
-            'sku' => $product->sku,
-            'price' => $product->price,
-            'video' => $product->video,
-            'description' => $product->description,
-            'details' => $product->details,
-            'tags' => $product->tags,
-            'weight' => $product->weight,
-            'color' => $product->color,
-            'size' => $product->size,
+            'category' => $categoryTrans->transform($product->category),
+            'name' => $product->product_name,
             'type' => $product->type,
-            'status' => $product->status,
+            'price' => $product->price,
+            'discount' => $product->percent_off,
+            'payable_price' => ($product->price  - (($product->price * $product->percent_off) / 100)),
+            'rating' => $product->star_rating,
+            'display_image' => $product->getDefaultImage()
         ];
+
+        if ($this->fullDetails) {
+            $more = [
+                'images' => $imagesTrans->collect($product->images()),
+                'video' => $product->video,
+                'description' => $product->description,
+                'details' => $product->details,
+                'tags' => $product->tags,
+                'weight' => $product->weight,
+                'color' => $product->color,
+                'size' => $product->size,
+                'sku' => $product->sku,
+                'type' => $product->type,
+                'status' => $product->status,
+            ];
+        } else {
+            $more = [];
+        }
+        return array_merge($shortDetails, $more);
     }
 
     public function collect($collection)
     {
-        $transformer = new ProductTransformer($this->fullDetails);
+        $transformer = new ProductTransformer($this->fullDetails );
         return collect($collection)->map(function ($model) use ($transformer) {
             return $transformer->transform($model);
         });
     }
-
 }

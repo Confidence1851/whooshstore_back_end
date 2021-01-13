@@ -2,19 +2,9 @@
 
 namespace App\Traits;
 
-use App\Helpers\ApiConstants;
-use App\Mail\NewInvestment;
-use App\Mail\NewNotification;
-use App\Mail\NewStakeCard;
-use App\Mail\NewTransaction;
-use App\Mail\NewWithdrawal;
 use App\Models\Payment;
-use App\Models\UserTransaction;
 use Exception;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Omnipay\Omnipay;
 
 trait PaymentGateWays
@@ -39,7 +29,7 @@ trait PaymentGateWays
                     $data = $response->getData();
                     //dd($data);
                     $payment = Payment::create([
-                        "user_id" => $user_id ?? auth()->id(),
+                        "user_id" => $user_id ?? auth("api")->id(),
                         "reference" =>  $data['id'],
                         "amount" => $data['amount']/100,
                         "currency" => "USD",
@@ -66,7 +56,7 @@ trait PaymentGateWays
             ];
         }
         catch(Exception $e){
-            dd($e);
+            // dd($e);
             return [
                 'success' => false,
                 'msg' => "Couldn`t verify payment!",

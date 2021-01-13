@@ -62,7 +62,7 @@ trait Profile
             $returnData['token'] = $token ;
         }
         $returnData['user'] = $userTrans->transform($user);
-        // $returnData['status_check'] = $this->account_status_check($user);
+        $returnData['status_check'] = $this->account_status_check($user);
         $returnData['app_info'] = [
             'build_no' => 1,
             'version_no' => 1,

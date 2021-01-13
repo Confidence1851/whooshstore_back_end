@@ -97,8 +97,11 @@ function validResponse(string $message = null, $data = null, $request = null)
     }
 
 
-	function collect_pagination($transformer , LengthAwarePaginator $pagination)
+	function collect_pagination($transformer , LengthAwarePaginator $pagination , $appendQuery = true)
     {
+        if($appendQuery){
+            $pagination->appends(request()->query());
+        }
         $all_pg_data = $pagination->toArray();
         $data = collect($pagination->getCollection())->map(function ($model) use ($transformer) {
             return $transformer->transform($model);

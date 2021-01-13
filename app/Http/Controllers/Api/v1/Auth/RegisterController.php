@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1\Auth;
 use App\Helpers\ApiConstants;
 use App\Http\Controllers\Api\V1\ApiController;
 use App\Http\Controllers\Controller;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\UserRepository;
 use App\Traits\Notifications;
 use App\Traits\Profile;
 use Illuminate\Auth\Events\Registered;
@@ -23,7 +23,7 @@ class RegisterController extends ApiController
 
     private $userRepo;
 
-    public function __construct(UserRepositoryInterface $userRepo)
+    public function __construct(UserRepository $userRepo)
     {
         $this->userRepo = $userRepo;
     }
@@ -43,7 +43,17 @@ class RegisterController extends ApiController
      *           type="string"
      *      )
      *   ),
-     *   @OA\Parameter(
+     *  @OA\Parameter(
+     *      name="role",
+     *      in="query",
+     *      description="Options: customer , vendor",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *      )
+     *   ),
+     *
+     *    @OA\Parameter(
      *      name="email",
      *      in="query",
      *      required=true,
@@ -94,7 +104,9 @@ class RegisterController extends ApiController
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'bail|required|string|max:50',
+                'firstname' => 'bail|required|string|max:50',
+                'lastname' => 'bail|required|string|max:50',
+                'role' => 'bail|required|string|in:customer,vendor',
                 'email' => 'bail|required|string|email|max:50|unique:users',
                 'password' => 'bail|required|string|min:6',
             ]);
@@ -103,9 +115,13 @@ class RegisterController extends ApiController
                 throw new ValidationException($validator);
             }
 
+            $role = $request["role"] == "customer" ? ApiConstants::DEFAULT_USER_TYPE : ApiConstants::VENDOR_USER_TYPE;
+
             $user = $this->userRepo->create([
-                'name' => ucwords($request['name']),
+                'firstname' => ucwords($request['firstname']),
+                'lastname' => ucwords($request['lastname']),
                 'email' => $request['email'],
+                'role' => $role,
                 'password' => Hash::make($request['password']),
             ]);
 
