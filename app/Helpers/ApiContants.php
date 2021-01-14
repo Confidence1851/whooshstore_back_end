@@ -12,8 +12,9 @@ class ApiConstants
     const NOT_FOUND_ERR_CODE = 404;
     const VALIDATION_ERR_CODE = 422;
     const GOOD_REQ_CODE = 200;
-    const DEFAULT_USER_TYPE = "user"; // represents "Student"
-    const ADMIN_USER_TYPE = "admin";// represents "Admin"
+    const DEFAULT_USER_TYPE = 2; // represents "User or Customer"
+    const VENDOR_USER_TYPE = 1;// represents "Vendor"
+    const ADMIN_USER_TYPE = 0;// represents "Admin"
     const AUTH_TOKEN_EXP = 60; // auth otp token expiry in minutes
     const OTP_DEFAULT_LENGTH = 7;
     const MAX_PROFILE_PIC_SIZE = 2048;
@@ -32,10 +33,12 @@ class ApiConstants
     const FB_PROVIDER = 'facebook';
 
     const PAGINATION_SIZE_WEB = 50;
+    const PAGINATION_SIZE_API = 20;
 
 
     const ACTIVE_STATUS = "Active";
     const INACTIVE_STATUS = "Inactive";
+    const PENDING_STATUS = "Pending";
 
 
 

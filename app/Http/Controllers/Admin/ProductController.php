@@ -28,11 +28,6 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(20);
-        if(count($products)){
-            foreach ($products as $value) {
-                $value->user = User::where('id', $value->user_id)->firstOrFail();
-            }
-        }
         return view('Admin\product\index', compact('products'));
     }
 
@@ -67,7 +62,7 @@ class ProductController extends Controller
             $product = Product::create($data);
             toastr()->success('Data has been saved successfully!');
             // return redirect()->route('index.products');
-            return redirect()->route("products.images" , $product->id);
+            return redirect()->route("products.images", $product->id);
         } catch (Exception $e) {
             return back()->with("error", $e->getMessage());
         }
@@ -161,7 +156,7 @@ class ProductController extends Controller
 
     public function images(Product $product)
     {
-        $images = ProductImage::where("product_id" , $product->id)->get();
+        $images = ProductImage::where("product_id", $product->id)->get();
         return view('admin.product.images', compact('product', 'images'));
     }
 
@@ -196,12 +191,22 @@ class ProductController extends Controller
         return back();
     }
 
-    public function deleteImage(Request $request,$product){
-        dd($request->all());
-        $image = ProductImage::find($product);
-        $issetImage = !empty($image);
-        if ($issetImage) {
-            deleteFileFromPrivateStorage($image->getImage());
+    public function deleteImage(Request $request, $productImageId)
+    {
+
+        try {
+            $productImage = ProductImage::findorfail($productImageId);
+            $issetImage = !empty($productImage);
+            if ($issetImage) {
+                deleteFileFromPrivateStorage($productImage->getImage());
+            }
+
+            $productImage->delete();
+
+            toastr()->success('Data has been deleted successfully!');
+            return redirect()->back();
+        } catch (Exception $e) {
+            return back()->with("error", $e->getMessage());
         }
     }
 }

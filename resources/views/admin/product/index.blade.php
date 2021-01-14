@@ -41,7 +41,7 @@
                                     <tr>
                                         <td><img src="{{ $product->getDefaultImage() }}" alt=""></td>
                                         <td>{{ $product->product_name }}</td>
-                                        <td>{{ $product->user->lastname }} {{ $product->user->firstname}}</td>
+                                        <td>{{ optional($product->user)->lastname }} {{ optional($product->user)->firstname}}</td>
                                         <td>{{ $product->category->name }}</td>
                                         <td>{{ $product->slug }}</td>
                                         <td>{{ $product->quantity }}</td>

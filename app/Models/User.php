@@ -18,7 +18,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
+        'role',
         'email',
         'password',
         'is_admin'
@@ -68,5 +70,9 @@ class User extends Authenticatable
     public function products()
     {
         return $this->hasMany('Product');
+    }
+
+    public function getProfilePhotoUrlAttribute(){
+        return null;
     }
 }

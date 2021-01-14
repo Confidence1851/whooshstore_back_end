@@ -24,7 +24,7 @@ class CreateOrdersTable extends Migration
             $table->string('file')->nullable();
             $table->string('comment')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('status', ['Approved', 'Pending', 'Delivered'])->default('Pending');
+            $table->enum('status', ['Pending', 'Cancelled', 'Processing', 'Completed'])->default('Pending');
             $table->timestamps();
             $table->softDeletes();
         });

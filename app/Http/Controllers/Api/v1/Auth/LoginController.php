@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Helpers\ApiConstants;
 use App\Http\Controllers\Api\V1\ApiController;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\UserRepository;
 use App\Traits\Profile;
 use App\Transformers\UserTransformer;
 use Illuminate\Auth\Events\Registered;
@@ -23,7 +23,7 @@ class LoginController extends ApiController
 
     private $userRepo;
 
-    public function __construct(UserRepositoryInterface $userRepo)
+    public function __construct(UserRepository $userRepo)
     {
         $this->userRepo = $userRepo;
     }
@@ -98,9 +98,9 @@ class LoginController extends ApiController
 
             if (Auth::attempt($credentials)) {
                 $user = $this->userRepo->user();
-                $userTokens = $user->tokens;
 
                 // Delete exiting tokens
+                $userTokens = $user->tokens;
                 foreach ($userTokens as $token) {
                     // $token->revoke();
                     $token->delete();
