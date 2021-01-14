@@ -24,7 +24,7 @@ class ProductCategoryFactory extends Factory
     {
         $name = $this->faker->name;
         $slug = Str::slug($name);
-
+        $categories = array("Health & Beauty", "Home & Office", "Phones & Tablets","Computing","Electronics","Fashion","Baby Products","Gaming","Sporting Goods");
         return [
             'name' => $name,
             'icon' => 'star',

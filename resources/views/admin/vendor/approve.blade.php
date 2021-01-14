@@ -55,7 +55,7 @@ Approve Products
                         <button type="submit" class="btn btn-success btn-sm">Approve</button>
                     </form> 
                     {{-- <a href="" class="btn btn-danger btn-sm">Delete</a> --}}
-                    <a href="" class="btn btn-primary btn-sm">View</a>
+                    <a href="" class="btn btn-primary btn-sm d-none">View</a>
                  </td>
                 </tr>
                   @endforeach

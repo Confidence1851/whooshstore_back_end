@@ -3,6 +3,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Str;
    
 class CreateUserSeeder extends Seeder
 {
@@ -21,13 +22,15 @@ class CreateUserSeeder extends Seeder
                'password'=> bcrypt('password'),
             ],
             [
-               'firstname'=>'Vendor',
-               'email'=>'user@email.com',
+               'firstname'=>'Michael',
+               'lastname'=>'Johnathan',
+               'email'=>'user1@email.com',
                'role'=>'2',
                'password'=> bcrypt('123456'),
             ],
             [
-               'firstname'=>'User',
+               'firstname'=>'Harry',
+               'lastname'=>'Kane',
                'email'=>'user2@email.com',
                'role'=>'0',
                'password'=> bcrypt('123456'),
@@ -37,5 +40,10 @@ class CreateUserSeeder extends Seeder
         foreach ($user as $key => $value) {
             User::create($value);
         }
+
+        //create 50 vendors
+        User::factory()
+            ->times(50)
+            ->create();
     }
 }
