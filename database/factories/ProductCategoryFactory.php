@@ -29,7 +29,7 @@ class ProductCategoryFactory extends Factory
             'name' => $name,
             'icon' => 'star',
             'slug' => $slug,
-            'image' => $this->faker->image('public/uploads/product-category',400,300, null, false),
+            'image' => "",
         ];
     }
 }
