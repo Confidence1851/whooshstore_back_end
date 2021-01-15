@@ -38,6 +38,7 @@ Route::namespace('App\Http\Controllers\Api\v1')->prefix("v1")->group(function ()
         Route::get('recently-viewed-products', 'HomeController@recentlyViewed');
         Route::get('product-categories', 'HomeController@productCategories');
         Route::get('trending-searches', 'HomeController@trendingSearches');
+        Route::get('slider-and-images', 'HomeController@sliderAndImages');
     });
 
     Route::as('auth.')->middleware('auth:api')->group(function () {

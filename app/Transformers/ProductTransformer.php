@@ -8,9 +8,11 @@ use App\Models\Product;
 class ProductTransformer
 {
     private $fullDetails;
-    public function __construct($fullDetails = false)
+    private $withCategory;
+    public function __construct($fullDetails = false , $withCategory = true)
     {
         $this->fullDetails = $fullDetails;
+        $this->withCategory = $withCategory;
     }
     public function transform(Product $product)
     {
@@ -18,7 +20,7 @@ class ProductTransformer
         $imagesTrans = new ProductImageTransformer;
         $shortDetails = [
             'id' => $product->id,
-            'category' => $categoryTrans->transform($product->category),
+            'category' => $this->withCategory ? $categoryTrans->transform($product->category) : null,
             'name' => $product->product_name,
             'type' => $product->type,
             'price' => $product->price,
@@ -30,7 +32,7 @@ class ProductTransformer
 
         if ($this->fullDetails) {
             $more = [
-                'images' => $imagesTrans->collect($product->images()),
+                'images' => $imagesTrans->collect($product->images),
                 'video' => $product->video,
                 'description' => $product->description,
                 'details' => $product->details,
